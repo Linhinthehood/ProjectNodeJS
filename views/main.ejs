@@ -39,14 +39,14 @@
                 });
             });
         
-            // Khi nhấn nút giỏ hàng, hiển thị danh sách sản phẩm trong modal
+            // Khi nhấn nút giỏ hàng,thì nó sẽ hiển thị danh sách sản phẩm trong modal
             document.getElementById("cartButton").addEventListener("click", function () {
                 renderCart();
                 let cartModal = new bootstrap.Modal(document.getElementById("cartModal"));
                 cartModal.show();
             });
         
-            // Xóa sản phẩm khỏi giỏ hàng
+            // Xóa từng cái khỏi cái giỏ hàng
             function removeItem(id) {
                 cart = cart.filter(item => item.id !== id);
                 localStorage.setItem("cart", JSON.stringify(cart));
@@ -62,7 +62,7 @@
                 updateCartCount();
             });
         
-            // Cập nhật danh sách sản phẩm trong modal
+            // cập nhật lại cái phần giỏ
             function renderCart() {
                 let cartItems = document.getElementById("cartItems");
                 cartItems.innerHTML = "";
@@ -154,7 +154,7 @@
  </style>
 
     <body>
-        <!-- Navigation-->
+        <!--cái này là phần Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
     <div class="container">
         <a class="navbar-brand fw-bold text-uppercase" href="#!">JUST DO IT</a>
@@ -182,7 +182,6 @@
                 <button class="btn btn-dark btn-sm ms-2" type="submit"><i class="bi bi-search"></i></button>
             </form>
 
-            <!-- Icons -->
             <div class="d-flex align-items-center gap-3">
                 <a href="/auth" class="text-dark fw-bold text-uppercase small">Sign In</a>
                 <a href="/auth" class="text-dark fw-bold text-uppercase small">Register</a>
@@ -269,11 +268,6 @@
             }
     </style>
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-            <!-- <ol class="carousel-indicators">
-                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
-                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
-                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
-            </ol> -->
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img class="d-block h-80 w-100" src="/assets/banner_3.jpg" alt="First slide" >
@@ -520,28 +514,10 @@
             </div>
         </section>
 
-   <!-- Confirm Modal -->
-<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmModalLabel">Confirm Add to Cart</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Do you want to add <span id="productName"></span> to your cart?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirmAdd">Confirm</button>
-            </div>
-        </div>
-    </div>
-</div>
+
         <!-- Footer-->
         <footer class="py-5 bg-black text-white">
             <div class="container text-center">
-                <!-- <img src="/assets/nike-logo.png" alt="Nike Logo" class="mb-3" width="100"> -->
                 <p class="m-0 fw-bold text-uppercase">Just Do It.</p>
                 <p class="m-0 text-secondary">© 2024 Nike Old School Vibes. All Rights Reserved.</p>
                 <div class="mt-3">
