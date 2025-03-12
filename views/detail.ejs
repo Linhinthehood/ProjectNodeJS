@@ -8,13 +8,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
         body {
             font-weight: 100;
             font-size: 0.95rem;
         }
         .main-container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 30px auto;
         }
         .product-slider {
@@ -93,57 +97,136 @@
         }
     </style>
 </head>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        updateCartCount();
+    
+        // Xử lý sự kiện khi nhấn "ADD TO CART"
+        document.querySelectorAll(".addToCart").forEach(button => {
+            button.addEventListener("click", function () {
+                let id = this.getAttribute("data-id");
+                let name = this.getAttribute("data-name");
+                let price = this.getAttribute("data-price");
+    
+                let item = cart.find(p => p.id === id); 
+                if (item) {
+                    item.quantity++;
+                } else {
+                    cart.push({ id, name, price, quantity: 1 });
+                }
+    
+                localStorage.setItem("cart", JSON.stringify(cart));
+                updateCartCount();
+            });
+        });
+    
+        // Khi nhấn nút giỏ hàng,thì nó sẽ hiển thị danh sách sản phẩm trong modal
+        document.getElementById("cartButton").addEventListener("click", function () {
+            renderCart();
+            let cartModal = new bootstrap.Modal(document.getElementById("cartModal"));
+            cartModal.show();
+        });
+    
+        // Xóa từng cái khỏi cái giỏ hàng
+        function removeItem(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            renderCart();
+            updateCartCount();
+        }
+    
+        // Xóa tất cả sản phẩm
+        document.getElementById("clearCart").addEventListener("click", function () {
+            cart = [];
+            localStorage.removeItem("cart");
+            renderCart();
+            updateCartCount();
+        });
+    
+        // cập nhật lại cái phần giỏ
+        function renderCart() {
+            let cartItems = document.getElementById("cartItems");
+            cartItems.innerHTML = "";
+            if (cart.length === 0) {
+                cartItems.innerHTML = "<li class='list-group-item text-center'>Giỏ hàng trống</li>";
+                return;
+            }
+            cart.forEach(item => {
+                let li = document.createElement("li");
+                li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
+                li.innerHTML = `
+                    ${item.name} - ${item.quantity} x $${item.price}
+                    <button class="btn btn-danger btn-sm remove-item" data-id="${item.id}">🗑️</button>
+                `;
+                cartItems.appendChild(li);
+            });
+    
+            // Thêm sự kiện xóa sản phẩm cho từng nút
+            document.querySelectorAll(".remove-item").forEach(button => {
+                button.addEventListener("click", function () {
+                    let id = this.getAttribute("data-id");
+                    removeItem(id);
+                });
+            });
+        }
+    
+        // Cập nhật số lượng hiển thị trên giỏ hàng
+        function updateCartCount() {
+            document.getElementById("cartCount").textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+    });
+</script>
 <body class="d-flex flex-column min-vh-100 bg-light">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
         <div class="container">
-            <!-- Brand on left -->
-            <a class="navbar-brand fw-bold" href="#">YourBrand</a>
-
-            <!-- Toggle button for mobile -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand fw-bold text-uppercase" href="#!">YourBrand</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <!-- Menu in center + search + cart on right -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <!-- Center menu -->
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active fw-semibold" aria-current="page" href="#">SHOP</a>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#!">All Products</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                            <li><a class="dropdown-item" href="#!">Tops</a></li>
+                            <li><a class="dropdown-item" href="#!">Bottoms</a></li>
+                            <li><a class="dropdown-item" href="#!">Outerwears</a></li>
+                            <li><a class="dropdown-item" href="#!">Accessories</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="#">CONTACT</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="#">ABOUT US</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                 </ul>
-
-                <!-- Search and Cart on right -->
-                <form class="d-flex me-3" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search" />
-                    <button class="btn btn-outline-dark" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
+    
+                <!-- Phần search -->
+                <form class="d-flex me-3">
+                    <input class="form-control form-control-sm border-dark" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-dark btn-sm ms-2" type="submit"><i class="bi bi-search"></i></button>
                 </form>
-                <a href="#" class="text-dark fs-5 position-relative">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        2
-                    </span>
-                </a>
+    
+                <div class="d-flex align-items-center gap-3">
+                    <a href="/auth" class="text-dark fw-bold text-uppercase small">Sign In</a>
+                    <a href="/auth" class="text-dark fw-bold text-uppercase small">Register</a>
+                    <button id="cartButton" class="btn btn-dark btn-sm ms-2">
+                        <i class="bi bi-cart-fill me-1"></i>
+                        <span id="cartCount" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
-    
+
     <!-- Breadcrumb -->
+     <div style="margin-top: 60px;"></div>
     <div class="container mt-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Clothes</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Tops</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Cotton Casual T-Shirt</li>
             </ol>
         </nav>
@@ -174,7 +257,7 @@
                     </button>
                     
                     <!-- Sale Badge -->
-                    <span class="position-absolute top-0 start-0 bg-danger text-white py-1 px-2 m-2 rounded-pill">SALE</span>
+                    <span class="position-absolute top-0 start-0 bg-primary text-white py-1 px-2 m-2 rounded-pill">New Arrivals</span>
                 </div>
                 
                 <!-- Thumbnail Images -->
@@ -196,9 +279,7 @@
 
                     <!-- Price -->
                     <div class="fs-4 mb-3">
-                        <span class="text-danger fw-medium">300.000</span>
-                        <span class="text-decoration-line-through text-muted ms-2">400.000</span>
-                        <span class="badge bg-danger ms-2">25% OFF</span>
+                        <span class="text fw-medium">400.000</span>
                     </div>
                     
                     <!-- Description -->
@@ -207,31 +288,6 @@
                         Made from 100% organic cotton with a relaxed fit and breathable fabric.
                     </p>
                     
-                    <!-- Color Options -->
-                    <!-- <div class="mb-3">
-                        <h6 class="fw-medium">Color:</h6>
-                        <div class="d-flex gap-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="colorOption" id="colorBlack" checked>
-                                <label class="form-check-label" for="colorBlack">
-                                    Black
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="colorOption" id="colorWhite">
-                                <label class="form-check-label" for="colorWhite">
-                                    White
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="colorOption" id="colorBlue">
-                                <label class="form-check-label" for="colorBlue">
-                                    Blue
-                                </label>
-                            </div>
-                        </div>
-                    </div> -->
-                    
                     <!-- Size Options -->
                     <div class="mb-4">
                         <h6 class="fw-medium">Size:</h6>
@@ -239,7 +295,7 @@
                             <input type="radio" class="btn-check" name="sizeOptions" id="sizeS" autocomplete="off">
                             <label class="btn btn-outline-dark" for="sizeS">S</label>
                             
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeM" autocomplete="off" checked>
+                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeM" autocomplete="off">
                             <label class="btn btn-outline-dark" for="sizeM">M</label>
                             
                             <input type="radio" class="btn-check" name="sizeOptions" id="sizeL" autocomplete="off">
@@ -258,7 +314,10 @@
                             <input type="text" class="form-control text-center" id="quantityInput" value="1">
                             <button class="btn btn-outline-dark" type="button" id="increaseQuantity">+</button>
                         </div>
-                        <button class="btn btn-primary flex-grow-1">
+                        <button class="btn btn-success flex-grow-1 addToCart"
+                        data-id="1"
+                        data-name="T-Shirt"
+                        data-price="400.000">
                             <i class="fas fa-shopping-cart me-2"></i>Add to Cart
                         </button>
                     </div>
@@ -405,9 +464,9 @@
                 <div class="col-6 col-md-2 mb-3 mb-md-0">
                     <h6 class="fw-bold mb-3">SHOP</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Men</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Women</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Kids</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Tops</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Bottoms</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Outerwears</a></li>
                         <li class="mb-2"><a href="#" class="text-light text-decoration-none">Accessories</a></li>
                         <li class="mb-2"><a href="#" class="text-light text-decoration-none">New Arrivals</a></li>
                     </ul>
@@ -443,11 +502,30 @@
             <hr class="mt-4 border-secondary">
             <div class="row">
                 <div class="col-12 text-center">
-                    <p class="mb-0">&copy; 2023 YourBrand. All rights reserved.</p>
+                    <p class="mb-0">&copy; 2025 TDT. All rights reserved.</p>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- Modal giỏ hàng -->
+    <div id="cartModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Giỏ hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="cartItems" class="list-group"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button id="clearCart" class="btn btn-danger">Xóa tất cả</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
