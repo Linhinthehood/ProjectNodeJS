@@ -69,7 +69,8 @@
             border-radius: 10px;
         }
         .thumbnail {
-            flex: 0 0 70px;
+            flex: 0 0 50px; /* Adjust to a smaller size */
+            height: 50px; /* Ensure consistent height */
             cursor: pointer;
             opacity: 0.7;
             transition: opacity 0.2s;
@@ -192,21 +193,11 @@
                     
                     <!-- Product Title -->
                     <h2 class="fw-medium mb-2">Cotton Casual T-Shirt</h2>
-                    
-                    <!-- Rating -->
-                    <div class="mb-2">
-                        <i class="fas fa-star text-warning"></i>
-                        <i class="fas fa-star text-warning"></i>
-                        <i class="fas fa-star text-warning"></i>
-                        <i class="fas fa-star text-warning"></i>
-                        <i class="fas fa-star-half-alt text-warning"></i>
-                        <span class="ms-2 text-muted">(128 reviews)</span>
-                    </div>
-                    
+
                     <!-- Price -->
                     <div class="fs-4 mb-3">
-                        <span class="text-danger fw-medium">$29.99</span>
-                        <span class="text-decoration-line-through text-muted ms-2">$39.99</span>
+                        <span class="text-danger fw-medium">300.000</span>
+                        <span class="text-decoration-line-through text-muted ms-2">400.000</span>
                         <span class="badge bg-danger ms-2">25% OFF</span>
                     </div>
                     
@@ -217,7 +208,7 @@
                     </p>
                     
                     <!-- Color Options -->
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <h6 class="fw-medium">Color:</h6>
                         <div class="d-flex gap-2">
                             <div class="form-check">
@@ -239,7 +230,7 @@
                                 </label>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <!-- Size Options -->
                     <div class="mb-4">
@@ -288,24 +279,7 @@
                         </div>
                     </div>
                     
-                    <!-- Share Buttons -->
-                    <div class="d-flex align-items-center">
-                        <span class="me-3">Share:</span>
-                        <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-sm btn-outline-dark rounded-circle">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                            <a href="#" class="btn btn-sm btn-outline-dark rounded-circle">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a href="#" class="btn btn-sm btn-outline-dark rounded-circle">
-                                <i class="fab fa-pinterest-p"></i>
-                            </a>
-                            <a href="#" class="btn btn-sm btn-outline-dark rounded-circle">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        </div>
-                    </div>
+                
                 </div>
             </div>
         </div>
@@ -319,9 +293,6 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-controls="details" aria-selected="false">Details</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Reviews (128)</button>
                     </li>
                 </ul>
                 <div class="tab-content p-4 border border-top-0 rounded-bottom" id="productTabsContent">
@@ -355,121 +326,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                        <!-- Review Summary -->
-                        <div class="row mb-4">
-                            <div class="col-12 col-md-4 text-center border-end">
-                                <h1 class="display-4 fw-medium">4.5</h1>
-                                <div class="mb-2">
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star-half-alt text-warning"></i>
-                                </div>
-                                <p class="text-muted">Based on 128 reviews</p>
-                            </div>
-                            <div class="col-12 col-md-8">
-                                <div class="row align-items-center mb-2">
-                                    <div class="col-3">5 stars</div>
-                                    <div class="col-7">
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-2 text-end">75%</div>
-                                </div>
-                                <div class="row align-items-center mb-2">
-                                    <div class="col-3">4 stars</div>
-                                    <div class="col-7">
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 15%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-2 text-end">15%</div>
-                                </div>
-                                <div class="row align-items-center mb-2">
-                                    <div class="col-3">3 stars</div>
-                                    <div class="col-7">
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 7%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-2 text-end">7%</div>
-                                </div>
-                                <div class="row align-items-center mb-2">
-                                    <div class="col-3">2 stars</div>
-                                    <div class="col-7">
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 2%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-2 text-end">2%</div>
-                                </div>
-                                <div class="row align-items-center">
-                                    <div class="col-3">1 star</div>
-                                    <div class="col-7">
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 1%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-2 text-end">1%</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Review List -->
-                        <div class="mb-4">
-                            <h5 class="fw-medium mb-3">Customer Reviews</h5>
-                            
-                            <!-- Review Item 1 -->
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <div>
-                                            <span class="fw-medium">Sarah Johnson</span>
-                                            <div class="text-warning">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                            </div>
-                                        </div>
-                                        <small class="text-muted">2 weeks ago</small>
-                                    </div>
-                                    <h6 class="fw-medium">Perfect fit and super comfortable!</h6>
-                                    <p class="mb-0">I love this t-shirt! The fabric is soft and breathable, and the fit is exactly as described. I've washed it several times and it still looks brand new. Definitely buying more colors!</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Review Item 2 -->
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <div>
-                                            <span class="fw-medium">Michael Chen</span>
-                                            <div class="text-warning">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                        </div>
-                                        <small class="text-muted">1 month ago</small>
-                                    </div>
-                                    <h6 class="fw-medium">Great quality for the price</h6>
-                                    <p class="mb-0">The material is high quality and feels durable. My only complaint is that it runs slightly larger than expected, but otherwise a great purchase.</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Write a Review Button -->
-                            <button class="btn btn-outline-primary mt-3">
-                                <i class="fas fa-pencil-alt me-2"></i>Write a Review
-                            </button>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -482,17 +339,11 @@
                     <!-- Related Product 1 -->
                     <div class="col">
                         <div class="card h-100">
-                            <img src="/api/placeholder/300/350" class="card-img-top" alt="Related Product 1">
+                            <img src="/assets/shirts/Hoodies1.png" class="card-img-top" alt="Related Product 1">
                             <div class="card-body">
-                                <h6 class="card-title">Slim Fit Jeans</h6>
-                                <div class="text-warning mb-2">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
-                                <p class="fw-medium">$49.99</p>
+                                <h6 class="card-title ">Slim Fit Jeans</h6>
+                               
+                                <p class="fw-medium">600.000</p>
                             </div>
                         </div>
                     </div>
@@ -500,17 +351,11 @@
                     <!-- Related Product 2 -->
                     <div class="col">
                         <div class="card h-100">
-                            <img src="/api/placeholder/300/350" class="card-img-top" alt="Related Product 2">
+                            <img src="/assets/shirts/Hoodies2.png" class="card-img-top" alt="Related Product 2">
                             <div class="card-body">
                                 <h6 class="card-title">Casual Hooded Sweatshirt</h6>
-                                <div class="text-warning mb-2">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <p class="fw-medium">$39.99</p>
+                                
+                                <p class="fw-medium">600.000</p>
                             </div>
                         </div>
                     </div>
@@ -518,17 +363,11 @@
                     <!-- Related Product 3 -->
                     <div class="col">
                         <div class="card h-100">
-                            <img src="/api/placeholder/300/350" class="card-img-top" alt="Related Product 3">
+                            <img src="/assets/shirts/Shirt1.png" class="card-img-top" alt="Related Product 3">
                             <div class="card-body">
                                 <h6 class="card-title">Long Sleeve Polo Shirt</h6>
-                                <div class="text-warning mb-2">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
-                                <p class="fw-medium">$44.99</p>
+                                
+                                <p class="fw-medium">350.000</p>
                             </div>
                         </div>
                     </div>
@@ -536,17 +375,11 @@
                     <!-- Related Product 4 -->
                     <div class="col">
                         <div class="card h-100">
-                            <img src="/api/placeholder/300/350" class="card-img-top" alt="Related Product 4">
+                            <img src="/assets/shirts/Tanktop1.png" class="card-img-top" alt="Related Product 4">
                             <div class="card-body">
                                 <h6 class="card-title">Lightweight Jacket</h6>
-                                <div class="text-warning mb-2">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <p class="fw-medium">$69.99</p>
+                                
+                                <p class="fw-medium">200.000</p>
                             </div>
                         </div>
                     </div>
@@ -618,5 +451,46 @@
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sliderContainer = document.getElementById("imageSlider");
+            const sliderItems = document.querySelectorAll(".slider-item");
+            const prevButton = document.getElementById("prevSlide");
+            const nextButton = document.getElementById("nextSlide");
+            const thumbnails = document.querySelectorAll(".thumbnail");
+        
+            let currentIndex = 0;
+        
+            function updateSlider() {
+                const offset = -currentIndex * 100; // Move the slider
+                sliderContainer.style.transform = `translateX(${offset}%)`;
+                thumbnails.forEach((thumb, index) => {
+                    thumb.classList.toggle("active", index === currentIndex);
+                });
+            }
+        
+            nextButton.addEventListener("click", function () {
+                if (currentIndex < sliderItems.length - 1) {
+                    currentIndex++;
+                    updateSlider();
+                }
+            });
+        
+            prevButton.addEventListener("click", function () {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateSlider();
+                }
+            });
+        
+            thumbnails.forEach((thumb, index) => {
+                thumb.addEventListener("click", function () {
+                    currentIndex = index;
+                    updateSlider();
+                });
+            });
+        });
+        </script>
+        
 </body>
 </html>
