@@ -8,7 +8,7 @@ const path = require('path');
 dotenv.config();
 
 // Kết nối tới MongoDB
-connectDB();
+// connectDB();
 
 const app = express();
 
@@ -30,5 +30,5 @@ app.use('/', authRoutes);
 // Lắng nghe cổng (mặc định là 8080)
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port http://localhost/${PORT}`);
 });
