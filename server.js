@@ -7,9 +7,8 @@ const path = require('path');
 // Load biến môi trường
 dotenv.config();
 
-// Kết nối MongoDB Atlas
-// connectDB();
-// mongoose.connect("mongodb+srv://sockhi2004:*Smonkey5504@cluster.mongodb.net/shoes_data");
+// Kết nối tới MongoDB
+connectDB();
 
 const app = express();
 
@@ -29,10 +28,10 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 const authRoutes = require('./routes/authRoutes');
 app.use('/', authRoutes);
 
-const mainRoutes = require('./routes/main');
-app.use('/', mainRoutes);
+const productRoutes = require('./routes/productRoutes');
+app.use('/', productRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port http://localhost:${PORT}`);
 });

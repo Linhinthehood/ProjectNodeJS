@@ -1,6 +1,6 @@
 // controllers/authController.js
 
-const User = require('../models/usersModels');
+const User = require('../models/userModel');
 
 /**
  * GET /auth
