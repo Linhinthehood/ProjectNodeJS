@@ -8,7 +8,7 @@ const path = require('path');
 dotenv.config();
 
 // Kết nối tới MongoDB
-connectDB();
+// connectDB();
 
 const app = express();
 
