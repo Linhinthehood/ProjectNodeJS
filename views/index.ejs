@@ -152,7 +152,7 @@
         <!--cái này là phần Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
             <div class="container">
-                <a class="navbar-brand fw-bold text-uppercase" href="/main">YourBrand</a>
+                <a class="navbar-brand fw-bold text-uppercase" href="/index">YourBrand</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -164,7 +164,7 @@
                                 <li><a class="dropdown-item" href="#!">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                                <li><a class="dropdown-item" href="#!">Tops</a></li>
+                                <li><a class="dropdown-item" href="#!">Shirts</a></li>
                                 <li><a class="dropdown-item" href="#!">Bottoms</a></li>
                                 <li><a class="dropdown-item" href="#!">Outerwears</a></li>
                                 <li><a class="dropdown-item" href="#!">Accessories</a></li>
@@ -287,225 +287,36 @@
         <!-- Section-->
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
+                <!-- For each section -->
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <div class="col mb-5">
-                        <div class="card h-100" style="box-shadow: none;">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="/assets/shirts/HanoiLover.png" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
-                                    <!-- Product price-->
-                                    <span>$40.00 - $80.00</span>
+                    <% products.forEach(product => { %>
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <!-- Product image with a link to the product detail page -->
+                                <a href="/detail/<%= product._id %>">
+                                    <img class="card-img-top" src="<%= product.thumbnail %>" alt="<%= product.name %>" />
+                                </a>
+                                <!-- Product details -->
+                                <div class="card-body p-4 text-center">
+                                    <h5 class="fw-bolder"><%= product.name %></h5>
+                                    <span><%= product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %> ₫</span>
                                 </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <button class="btn btn-outline-dark mt-auto addToCart"
-                                            data-id="1"
-                                            data-name="Fancy Product"
-                                            data-price="40">
-                                        ADD TO CART
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col mb-5">
-                        <div class="card h-100" style="box-shadow: none;">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="/assets/shirts/HanoiLover.png" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
-                                    <!-- Product price-->
-                                    <span>$40.00 - $80.00</span>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <button class="btn btn-outline-dark mt-auto addToCart"
-                                            data-id="2"
-                                            data-name="Fancy Product"
-                                            data-price="40">
-                                        ADD TO CART
-                                    </button>
+                                <!-- Product actions -->
+                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                    <div class="text-center">
+                                        <button class="btn btn-outline-dark mt-auto addToCart"
+                                                data-id="<%= product._id %>"
+                                                data-name="<%= product.name %>"
+                                                data-price="<%= product.price %>">
+                                            ADD TO CART
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- check chỗ này id 3 -->
-                    <div class="col mb-5">
-                        <div class="card h-100" style="box-shadow: none;">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="/assets/shirts/HanoiLover.png" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
-                                    <!-- Product price-->
-                                    <span>$40.00 - $80.00</span>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <button class="btn btn-outline-dark mt-auto addToCart"
-                                            data-id="6"
-                                            data-name="Fancy Product"
-                                            data-price="40">
-                                        ADD TO CART
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-       
-                    <div class="col mb-5">
-                        <div class="card h-100" style="box-shadow: none;">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="/assets/shirts/HanoiLover.png" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
-                                    <!-- Product price-->
-                                    <span>$40.00 - $80.00</span>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <button class="btn btn-outline-dark mt-auto addToCart"
-                                            data-id="4"
-                                            data-name="Fancy Product"
-                                            data-price="40">
-                                        ADD TO CART
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col mb-5">
-                        <div class="card h-100" style="box-shadow: none;">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="/assets/shirts/HanoiLover.png" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
-                                    <!-- Product price-->
-                                    <span>$40.00 - $80.00</span>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <button class="btn btn-outline-dark mt-auto addToCart"
-                                            data-id="5"
-                                            data-name="Fancy Product"
-                                            data-price="40">
-                                        ADD TO CART
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col mb-5">
-                        <div class="card h-100" style="box-shadow: none;">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="/assets/shirts/HanoiLover.png" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
-                                    <!-- Product price-->
-                                    <span>$40.00 - $80.00</span>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <button class="btn btn-outline-dark mt-auto addToCart"
-                                            data-id="6"
-                                            data-name="Fancy Product"
-                                            data-price="40">
-                                        ADD TO CART
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col mb-5">
-                        <div class="card h-100" style="box-shadow: none;">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="/assets/shirts/HanoiLover.png" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
-                                    <!-- Product price-->
-                                    <span>$40.00 - $80.00</span>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <button class="btn btn-outline-dark mt-auto addToCart"
-                                            data-id="7"
-                                            data-name="Fancy Product"
-                                            data-price="40">
-                                        ADD TO CART
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col mb-5">
-                        <div class="card h-100" >
-                            <!-- Product image-->
-                            <img class="card-img-top" src="/assets/shirts/HanoiLover.png" alt="Hanoi" />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
-                                    <!-- Product price-->
-                                    <span>$40.00 - $80.00</span>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <button class="btn btn-outline-dark mt-auto addToCart"
-                                            data-id="8"
-                                            data-name="Fancy Product"
-                                            data-price="40">
-                                        ADD TO CART
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
+                    <% }); %>
                 </div>
+                
             </div>
         </section>
 

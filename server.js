@@ -8,7 +8,7 @@ const path = require('path');
 dotenv.config();
 
 // Kết nối tới MongoDB
-// connectDB();
+connectDB();
 
 const app = express();
 
@@ -28,8 +28,8 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 const authRoutes = require('./routes/authRoutes');
 app.use('/', authRoutes);
 
-const mainRoutes = require('./routes/main');
-app.use('/', mainRoutes);
+const productRoutes = require('./routes/productRoutes');
+app.use('/', productRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
