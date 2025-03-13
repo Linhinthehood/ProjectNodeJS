@@ -31,6 +31,9 @@ app.use('/', authRoutes);
 const productRoutes = require('./routes/productRoutes');
 app.use('/', productRoutes);
 
+const top_page = require('./routes/top_page');
+app.use('/', top_page);
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server running on port http://localhost:${PORT}`);
