@@ -9,7 +9,7 @@ Nhóm các chức năng chính:
 1. Đăng nhập / Đăng ký (sử dụng api, …)
 2. Main Page (Xem hàng, Check Hàng, Search Items, Phân loại sản phẩm)
 3. Account Page (Xem thông tin tài khoản)
-4. Cart Page (Xem sản phẩm mua, 
+4. Cart Page (Xem sản phẩm mua)
 5. Payment 
 
 Ghi chú:
