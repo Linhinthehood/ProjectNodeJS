@@ -298,7 +298,9 @@
                                 </a>
                                 <!-- Product details -->
                                 <div class="card-body p-4 text-center">
-                                    <h5 class="fw-bolder"><%= product.name %></h5>
+                                    <a href="/detail/<%= product._id %>" class="fs-5 text-dark text-decoration-none">
+                                        <%= product.name %>
+                                    </a>
                                     <span><%= product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %> ₫</span>
                                 </div>
                                 <!-- Product actions -->
