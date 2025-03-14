@@ -146,6 +146,11 @@
         *::after {
         box-sizing: border-box;
         }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 30px auto;
+        }
     </style>
 
     <body>
@@ -298,10 +303,12 @@
                                 </a>
                                 <!-- Product details -->
                                 <div class="card-body p-4 text-center">
-                                    <a href="/detail/<%= product._id %>" class="fs-5 text-dark text-decoration-none">
+                                    <a href="/detail/<%= product._id %>" class="fs-6 text-dark text-decoration-none">
                                         <%= product.name %>
                                     </a>
-                                    <span><%= product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %> ₫</span>
+                                </div>
+                                <div class="card-body p-2 text-center">
+                                    <p class="fs-5"><%= product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %> ₫</p>
                                 </div>
                                 <!-- Product actions -->
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
