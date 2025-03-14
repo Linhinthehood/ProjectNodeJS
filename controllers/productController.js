@@ -32,3 +32,13 @@ exports.getProductByID = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+exports.getCart = async (req,res) => {
+  try {
+    const cart = req.session || [];
+    res.render('cart', {cart});
+  } catch (error){
+      console.error("Error fetching cart:", error);
+      res.status(500).send("Error loading cart");
+  }
+}

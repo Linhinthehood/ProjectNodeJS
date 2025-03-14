@@ -98,83 +98,123 @@
 </head>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        updateCartCount();
-    
-        // Xử lý sự kiện khi nhấn "ADD TO CART"
-        document.querySelectorAll(".addToCart").forEach(button => {
-            button.addEventListener("click", function () {
-                let id = this.getAttribute("data-id");
-                let name = this.getAttribute("data-name");
-                let price = this.getAttribute("data-price");
-    
-                let item = cart.find(p => p.id === id); 
-                if (item) {
-                    item.quantity++;
-                } else {
-                    cart.push({ id, name, price, quantity: 1 });
-                }
-    
-                localStorage.setItem("cart", JSON.stringify(cart));
-                updateCartCount();
-            });
-        });
-    
-        // Khi nhấn nút giỏ hàng,thì nó sẽ hiển thị danh sách sản phẩm trong modal
-        document.getElementById("cartButton").addEventListener("click", function () {
-            renderCart();
-            let cartModal = new bootstrap.Modal(document.getElementById("cartModal"));
-            cartModal.show();
-        });
-    
-        // Xóa từng cái khỏi cái giỏ hàng
-        function removeItem(id) {
-            cart = cart.filter(item => item.id !== id);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            renderCart();
+            // Initialize cart from localStorage
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
             updateCartCount();
-        }
-    
-        // Xóa tất cả sản phẩm
-        document.getElementById("clearCart").addEventListener("click", function () {
-            cart = [];
-            localStorage.removeItem("cart");
-            renderCart();
-            updateCartCount();
-        });
-    
-        // cập nhật lại cái phần giỏ
-        function renderCart() {
-            let cartItems = document.getElementById("cartItems");
-            cartItems.innerHTML = "";
-            if (cart.length === 0) {
-                cartItems.innerHTML = "<li class='list-group-item text-center'>Giỏ hàng trống</li>";
-                return;
+            
+            // Make sure the cartButton exists
+            const cartButton = document.getElementById("cartButton");
+            if (cartButton) {
+                cartButton.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    renderCart();
+                    
+                    // Ensure the modal element exists
+                    const cartModalElement = document.getElementById("cartModal");
+                    if (cartModalElement) {
+                        // Initialize the modal properly
+                        const cartModal = new bootstrap.Modal(cartModalElement);
+                        cartModal.show();
+                    } else {
+                        console.error("Cart modal element not found");
+                    }
+                });
+            } else {
+                console.error("Cart button not found");
             }
-            cart.forEach(item => {
-                let li = document.createElement("li");
-                li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
-                li.innerHTML = `
-                    ${item.name} - ${item.quantity} x $${item.price}
-                    <button class="btn btn-danger btn-sm remove-item" data-id="${item.id}">🗑️</button>
-                `;
-                cartItems.appendChild(li);
-            });
-    
-            // Thêm sự kiện xóa sản phẩm cho từng nút
-            document.querySelectorAll(".remove-item").forEach(button => {
+            
+            // Set up buttons for clearing cart
+            const clearCartButton = document.getElementById("clearCart");
+            if (clearCartButton) {
+                clearCartButton.addEventListener("click", function () {
+                    cart = [];
+                    localStorage.removeItem("cart");
+                    renderCart();
+                    updateCartCount();
+                });
+            }
+            
+            // Function to update cart display
+            function renderCart() {
+                const cartItems = document.getElementById("cartItems");
+                if (!cartItems) {
+                    console.error("Cart items container not found");
+                    return;
+                }
+                
+                cartItems.innerHTML = "";
+                if (cart.length === 0) {
+                    cartItems.innerHTML = "<li class='list-group-item text-center'>Giỏ hàng trống</li>";
+                    return;
+                }
+                
+                cart.forEach(item => {
+                    let li = document.createElement("li");
+                    li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
+
+                    li.innerHTML = `
+                        <div class="d-flex align-items-center">
+                            <img src="${item.thumbnail}" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;" alt="${item.name}">
+                            <span>${item.name} x ${item.quantity} || ${formatPrice(item.price)} ₫</span>
+                        </div>
+                        <button class="btn btn-transparent btn-sm remove-item" data-id="${item.id}">🗑️</button>
+                    `;
+
+                    cartItems.appendChild(li);
+                });
+
+                
+                // Add event listeners for remove buttons
+                document.querySelectorAll(".remove-item").forEach(button => {
+                    button.addEventListener("click", function () {
+                        let id = this.getAttribute("data-id");
+                        removeItem(id);
+                    });
+                });
+            }
+            
+            // Function to remove item from cart
+            function removeItem(id) {
+                cart = cart.filter(item => item.id !== id);
+                localStorage.setItem("cart", JSON.stringify(cart));
+                renderCart();
+                updateCartCount();
+            }
+            
+            // Function to update the cart count badge
+            function updateCartCount() {
+                const cartCountElement = document.getElementById("cartCount");
+                if (cartCountElement) {
+                    cartCountElement.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+                }
+            }
+            
+            // Function to format price in VND format
+            function formatPrice(price) {
+                return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+            
+            // Set up add to cart buttons
+            document.querySelectorAll(".addToCart").forEach(button => {
                 button.addEventListener("click", function () {
                     let id = this.getAttribute("data-id");
-                    removeItem(id);
+                    let name = this.getAttribute("data-name");
+                    let price = this.getAttribute("data-price");
+                    let thumbnail = this.getAttribute("data-thumbnail")
+                    
+                    let item = cart.find(p => p.id === id);
+                    if (item) {
+                        item.quantity++;
+                    } else {
+                        cart.push({ id, name, price, thumbnail, quantity: 1 });
+                    }
+                    
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartCount();
+                    
                 });
             });
-        }
-    
-        // Cập nhật số lượng hiển thị trên giỏ hàng
-        function updateCartCount() {
-            document.getElementById("cartCount").textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-        }
-    });
+        });
 </script>
 <body class="d-flex flex-column min-vh-100 bg-light">
     <!-- Navigation -->
@@ -223,9 +263,9 @@
     <div class="container mt-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Tops</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Cotton Casual T-Shirt</li>
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-decoration-none"><%= product.type%></a></li>
+                <li class="breadcrumb-item active" aria-current="page"><%= product.name %></li>
             </ol>
         </nav>
     </div>
@@ -242,7 +282,7 @@
                     </button>
                     <div class="slider-container" id="imageSlider">
                         <% product.images.forEach((img, index) => { %>
-                            <div class="slider-item">
+                            <div class="slider-item" style="height: 575px;">
                                 <img src="<%= img %>" class="img-fluid rounded" alt="<%= product.name %> - View <%= index + 1 %>">
                             </div>
                         <% }); %>
@@ -313,7 +353,8 @@
                         <button class="btn btn-success flex-grow-1 addToCart"
                                 data-id="<%= product._id %>"
                                 data-name="<%= product.name %>"
-                                data-price="<%= product.price %>">
+                                data-price="<%= product.price %>"
+                                data-thumbnail="<%= product.thumbnail %>">
                             <i class="fas fa-shopping-cart me-2"></i>Add to Cart
                         </button>
                     </div>
@@ -448,7 +489,7 @@
     
 
     <!-- FOOTER -->
-    <footer class="bg-dark text-light py-5 mt-auto">
+    <footer class="bg-dark text-light py-5 mt-auto ">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-md-4 mb-4 mb-md-0">
@@ -520,6 +561,7 @@
                     <ul id="cartItems" class="list-group"></ul>
                 </div>
                 <div class="modal-footer">
+                    <a href="/cart" class="btn btn-primary">Go to Cart</a>
                     <button id="clearCart" class="btn btn-danger">Xóa tất cả</button>
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 </div>
@@ -567,7 +609,48 @@
                     updateSlider();
                 });
             });
-        });
+
+            const decreaseButton = document.getElementById('decreaseQuantity');
+            const increaseButton = document.getElementById('increaseQuantity');
+            const quantityInput = document.getElementById('quantityInput');
+
+            const MIN_QUANTITY = 1;
+            const MAX_QUANTITY = 100;
+
+            function updateQuantity(newValue) {
+            let quantity = parseInt(newValue);
+            
+            if (isNaN(quantity)) {
+                quantity = MIN_QUANTITY;
+            }
+            
+            quantity = Math.max(MIN_QUANTITY, quantity);
+            quantity = Math.min(MAX_QUANTITY, quantity);
+            
+            quantityInput.value = quantity;
+            }
+
+            decreaseButton.addEventListener('click', function() {
+            const currentValue = parseInt(quantityInput.value);
+            if (!isNaN(currentValue)) {
+                updateQuantity(currentValue - 1);
+            }
+            });
+
+            increaseButton.addEventListener('click', function() {
+            const currentValue = parseInt(quantityInput.value);
+            if (!isNaN(currentValue)) {
+                updateQuantity(currentValue + 1);
+            }
+            });
+
+            quantityInput.addEventListener('change', function() {
+            updateQuantity(this.value);
+            });
+
+            updateQuantity(quantityInput.value);
+        })
+
     </script>
     
 </body>
