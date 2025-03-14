@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Detail - YourBrand</title>
+    <title><%= product.name></title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome for icons -->
@@ -233,6 +233,7 @@
     </div>
 
     <!-- Main Content -->
+     <!-- for each section -->
     <main class="container main-container py-4 bg-white shadow rounded my-3">
         <div class="row">
             <!-- Product Images Section -->
@@ -242,210 +243,49 @@
                         <i class="fas fa-chevron-left"></i>
                     </button>
                     <div class="slider-container" id="imageSlider">
-                        <div class="slider-item">
-                            <img src="/assets/shirts/HanoiLover.png" class="img-fluid rounded" alt="T-Shirt Front">
-                        </div>
-                        <div class="slider-item">
-                            <img src="/assets/shirts/HanoiLover2.png" class="img-fluid rounded" alt="T-Shirt Back">
-                        </div>
-                        <div class="slider-item">
-                            <img src="/assets/shirts/HanoiLover3.png" class="img-fluid rounded" alt="T-Shirt Side">
-                        </div>
+                        <% product.images.forEach((img, index) => { %>
+                            <div class="slider-item">
+                                <img src="<%= img %>" class="img-fluid rounded" alt="<%= product.name %> - View <%= index + 1 %>">
+                            </div>
+                        <% }); %>
                     </div>
                     <button class="slider-nav slider-nav-right" id="nextSlide">
                         <i class="fas fa-chevron-right"></i>
                     </button>
-                    
-                    <!-- Sale Badge -->
-                    <span class="position-absolute top-0 start-0 bg-primary text-white py-1 px-2 m-2 rounded-pill">New Arrivals</span>
                 </div>
-                
+    
                 <!-- Thumbnail Images -->
                 <div class="thumbnail-slider mt-3" id="thumbnailSlider">
-                    <img src="/assets/shirts/HanoiLover.png" class="img-fluid rounded thumbnail active" data-index="0" alt="Thumbnail 1">
-                    <img src="/assets/shirts/HanoiLover2.png" class="img-fluid rounded thumbnail" data-index="1" alt="Thumbnail 2">
-                    <img src="/assets/shirts/HanoiLover3.png" class="img-fluid rounded thumbnail" data-index="2" alt="Thumbnail 3">
+                    <% product.images.forEach((img, index) => { %>
+                        <img src="<%= img %>" class="img-fluid rounded thumbnail <%= index === 0 ? 'active' : '' %>"
+                             data-index="<%= index %>" alt="Thumbnail <%= index + 1 %>">
+                    <% }); %>
                 </div>
             </div>
-            
+    
             <!-- Product Details Section -->
             <div class="col-12 col-md-6">
                 <div class="ps-md-4">
-                    <!-- Brand -->
-                    <div class="text-muted mb-1">YourBrand Collection</div>
-                    
-                    <!-- Product Title -->
-                    <h2 class="fw-medium mb-2">Cotton Casual T-Shirt</h2>
-
-                    <!-- Price -->
+                    <h2 class="fw-medium mb-2"><%= product.name %></h2>
                     <div class="fs-4 mb-3">
-                        <span class="text fw-medium">400.000</span>
+                        <span class="text fw-medium">$<%= product.price %></span>
                     </div>
-                    
-                    <!-- Description -->
-                    <p class="mb-4">
-                        A premium quality, comfortable cotton t-shirt that's perfect for everyday wear. 
-                        Made from 100% organic cotton with a relaxed fit and breathable fabric.
-                    </p>
-                    
-                    <!-- Size Options -->
-                    <div class="mb-4">
-                        <h6 class="fw-medium">Size:</h6>
-                        <div class="btn-group" role="group" aria-label="Size options">
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeS" autocomplete="off">
-                            <label class="btn btn-outline-dark" for="sizeS">S</label>
-                            
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeM" autocomplete="off">
-                            <label class="btn btn-outline-dark" for="sizeM">M</label>
-                            
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeL" autocomplete="off">
-                            <label class="btn btn-outline-dark" for="sizeL">L</label>
-                            
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeXL" autocomplete="off">
-                            <label class="btn btn-outline-dark" for="sizeXL">XL</label>
-                        </div>
-                        <a href="#" class="ms-3 text-decoration-none">Size Guide</a>
-                    </div>
-                    
-                    <!-- Quantity and Add to Cart -->
+                    <p class="mb-4"><%= product.description %></p>
+    
+                    <!-- Add to Cart Button -->
                     <div class="d-flex mb-4 align-items-center">
-                        <div class="input-group me-3" style="width: 130px;">
-                            <button class="btn btn-outline-dark" type="button" id="decreaseQuantity">-</button>
-                            <input type="text" class="form-control text-center" id="quantityInput" value="1">
-                            <button class="btn btn-outline-dark" type="button" id="increaseQuantity">+</button>
-                        </div>
                         <button class="btn btn-success flex-grow-1 addToCart"
-                        data-id="1"
-                        data-name="T-Shirt"
-                        data-price="400.000">
+                                data-id="<%= product._id %>"
+                                data-name="<%= product.name %>"
+                                data-price="<%= product.price %>">
                             <i class="fas fa-shopping-cart me-2"></i>Add to Cart
                         </button>
-                    </div>
-                    
-                    <!-- Additional Info -->
-                    <div class="d-flex flex-wrap mb-4">
-                        <div class="me-4 mb-2">
-                            <i class="fas fa-truck text-muted me-2"></i>
-                            <span>Free shipping</span>
-                        </div>
-                        <div class="me-4 mb-2">
-                            <i class="fas fa-undo text-muted me-2"></i>
-                            <span>30 days return</span>
-                        </div>
-                        <div class="mb-2">
-                            <i class="fas fa-check-circle text-muted me-2"></i>
-                            <span>In stock</span>
-                        </div>
-                    </div>
-                    
-                
-                </div>
-            </div>
-        </div>
-        
-        <!-- Product Details Tabs -->
-        <div class="row mt-5">
-            <div class="col-12">
-                <ul class="nav nav-tabs" id="productTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-controls="details" aria-selected="false">Details</button>
-                    </li>
-                </ul>
-                <div class="tab-content p-4 border border-top-0 rounded-bottom" id="productTabsContent">
-                    <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-                        <p>This premium cotton t-shirt combines style and comfort for everyday wear. Crafted with 100% organic cotton, it features a classic cut with a modern fit that flatters all body types.</p>
-                        <p>The breathable fabric ensures all-day comfort, whether you're running errands or meeting friends for coffee. The relaxed fit provides freedom of movement while maintaining a stylish silhouette.</p>
-                        <p>Pre-shrunk and machine washable, this t-shirt is designed to last through countless wears and washes without losing its shape or color vibrancy.</p>
-                    </div>
-                    <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <h5 class="fw-medium mb-3">Product Specifications</h5>
-                                <ul class="list-unstyled">
-                                    <li class="mb-2"><span class="fw-medium">Material:</span> 100% Organic Cotton</li>
-                                    <li class="mb-2"><span class="fw-medium">Weight:</span> 180 GSM</li>
-                                    <li class="mb-2"><span class="fw-medium">Fit:</span> Regular</li>
-                                    <li class="mb-2"><span class="fw-medium">Neckline:</span> Crew Neck</li>
-                                    <li class="mb-2"><span class="fw-medium">Sleeve Type:</span> Short Sleeve</li>
-                                    <li class="mb-2"><span class="fw-medium">Pattern:</span> Solid</li>
-                                </ul>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <h5 class="fw-medium mb-3">Care Instructions</h5>
-                                <ul class="list-unstyled">
-                                    <li class="mb-2"><i class="fas fa-tint text-muted me-2"></i> Machine wash cold</li>
-                                    <li class="mb-2"><i class="fas fa-ban text-muted me-2"></i> Do not bleach</li>
-                                    <li class="mb-2"><i class="fas fa-temperature-low text-muted me-2"></i> Tumble dry low</li>
-                                    <li class="mb-2"><i class="fas fa-iron text-muted me-2"></i> Iron on low heat</li>
-                                    <li class="mb-2"><i class="fas fa-times text-muted me-2"></i> Do not dry clean</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        
-        <!-- You May Also Like Section -->
-        <div class="row mt-5">
-            <div class="col-12">
-                <h3 class="fw-medium mb-4">You May Also Like</h3>
-                <div class="row row-cols-2 row-cols-md-4 g-4">
-                    <!-- Related Product 1 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Hoodies1.png" class="card-img-top" alt="Related Product 1">
-                            <div class="card-body">
-                                <h6 class="card-title ">Slim Fit Jeans</h6>
-                               
-                                <p class="fw-medium">600.000</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Related Product 2 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Hoodies2.png" class="card-img-top" alt="Related Product 2">
-                            <div class="card-body">
-                                <h6 class="card-title">Casual Hooded Sweatshirt</h6>
-                                
-                                <p class="fw-medium">600.000</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Related Product 3 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Shirt1.png" class="card-img-top" alt="Related Product 3">
-                            <div class="card-body">
-                                <h6 class="card-title">Long Sleeve Polo Shirt</h6>
-                                
-                                <p class="fw-medium">350.000</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Related Product 4 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Tanktop1.png" class="card-img-top" alt="Related Product 4">
-                            <div class="card-body">
-                                <h6 class="card-title">Lightweight Jacket</h6>
-                                
-                                <p class="fw-medium">200.000</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+    
 
     <!-- FOOTER -->
     <footer class="bg-dark text-light py-5 mt-auto">
