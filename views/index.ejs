@@ -13,130 +13,9 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Core theme CSS (includes Bootstrap)-->
 </head>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Initialize cart from localStorage
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        updateCartCount();
-
-        // Make sure the cartButton exists
-        const cartButton = document.getElementById("cartButton");
-        if (cartButton) {
-            cartButton.addEventListener("click", function (event) {
-                event.preventDefault();
-                renderCart();
-
-                // Ensure the modal element exists
-                const cartModalElement = document.getElementById("cartModal");
-                if (cartModalElement) {
-                    // Initialize the modal properly
-                    const cartModal = new bootstrap.Modal(cartModalElement);
-                    cartModal.show();
-                } else {
-                    console.error("Cart modal element not found");
-                }
-            });
-        } else {
-            console.error("Cart button not found");
-        }
-
-        // Set up buttons for clearing cart
-        const clearCartButton = document.getElementById("clearCart");
-        if (clearCartButton) {
-            clearCartButton.addEventListener("click", function () {
-                cart = [];
-                localStorage.removeItem("cart");
-                renderCart();
-                updateCartCount();
-            });
-        }
-
-        // Function to update cart display
-        function renderCart() {
-            const cartItems = document.getElementById("cartItems");
-            if (!cartItems) {
-                console.error("Cart items container not found");
-                return;
-            }
-
-            cartItems.innerHTML = "";
-            if (cart.length === 0) {
-                cartItems.innerHTML = "<li class='list-group-item text-center'>Giỏ hàng trống</li>";
-                return;
-            }
-
-            cart.forEach(item => {
-                let li = document.createElement("li");
-                li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
-
-                li.innerHTML = `
-                        <div class="d-flex align-items-center">
-                            <img src="${item.thumbnail}" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;" alt="${item.name}">
-                            <span>${item.name} x ${item.quantity} || ${formatPrice(item.price)} ₫</span>
-                        </div>
-                        <button class="btn btn-transparent btn-sm remove-item" data-id="${item.id}">🗑️</button>
-                    `;
-
-                cartItems.appendChild(li);
-            });
-
-            // Add event listeners for remove buttons
-            document.querySelectorAll(".remove-item").forEach(button => {
-                button.addEventListener("click", function () {
-                    let id = this.getAttribute("data-id");
-                    removeItem(id);
-                });
-            });
-        }
-
-        // Function to remove item from cart
-        function removeItem(id) {
-            cart = cart.filter(item => item.id !== id);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            renderCart();
-            updateCartCount();
-        }
-
-        // Function to update the cart count badge
-        function updateCartCount() {
-            const cartCountElement = document.getElementById("cartCount");
-            if (cartCountElement) {
-                cartCountElement.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-            }
-        }
-
-        // Function to format price in VND format
-        function formatPrice(price) {
-            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-
-        // Set up add to cart buttons
-        document.querySelectorAll(".addToCart").forEach(button => {
-            button.addEventListener("click", function () {
-                let id = this.getAttribute("data-id");
-                let name = this.getAttribute("data-name");
-                let price = this.getAttribute("data-price");
-                let thumbnail = this.getAttribute("data-thumbnail")
-
-                let item = cart.find(p => p.id === id);
-                if (item) {
-                    item.quantity++;
-                } else {
-                    cart.push({ id, name, price, thumbnail, quantity: 1 });
-                }
-
-                localStorage.setItem("cart", JSON.stringify(cart));
-                updateCartCount();
-
-            });
-        });
-    });
-</script>
-
 <style>
     body {
-        background-color: #f5f5f5;
+        background-color: #ffffff;
     }
 
     .card {
@@ -190,7 +69,6 @@
         margin: 30px auto;
     }
 </style>
-
 <body>
     <!--cái này là phần Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
@@ -228,7 +106,7 @@
                 </form>
 
                 <div class="d-flex align-items-center gap-3">
-                    <a href="/auth" class="text-dark fw-bold text-uppercase small">Sign In / Register</a>
+                    <a href="/auth" class="text-dark fw-bold text-uppercase small"><i class="bi bi-person-fill fs-4"></i></a>
                     <!-- <a href="/auth" class="text-dark fw-bold text-uppercase small">Register</a> -->
                     <button id="cartButton" class="btn btn-dark btn-sm ms-2">
                         <i class="bi bi-cart-fill me-1"></i>
@@ -250,15 +128,12 @@
                     <ul id="cartItems" class="list-group"></ul>
                 </div>
                 <div class="modal-footer">
+                    <button id="clearCart" class="btn btn-danger me-auto">Xóa tất cả</button>
                     <a href="/cart" class="btn btn-primary">Go to Cart</a>
-                    <button id="clearCart" class="btn btn-danger">Xóa tất cả</button>
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <!-- CSS cho cái navigation -->
     <style>
@@ -285,8 +160,6 @@
             color: #f04e30 !important;
         }
     </style>
-
-
 
     <!-- Header -->
     <style>
@@ -360,16 +233,6 @@
                                 <p class="fs-5">
                                     <%= product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "." ) %> ₫
                                 </p>
-                            </div>
-                            <!-- Product actions -->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <button class="btn btn-outline-dark mt-auto addToCart" data-id="<%= product._id %>"
-                                        data-name="<%= product.name %>" data-price="<%= product.price %>"
-                                        data-thumbnail="<%=product.thumbnail%>">
-                                        ADD TO CART
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -459,7 +322,7 @@
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="js/scripts.js"></script> -->
+    <script src="/main.js"></script>
 </body>
 
 </html>

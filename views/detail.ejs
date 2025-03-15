@@ -1,37 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= product.name %></title>
+    <title>
+        <%= product.name %>
+    </title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-        <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-weight: 100;
             font-size: 0.95rem;
         }
+
         .main-container {
             max-width: 1200px;
             margin: 30px auto;
         }
+
         .product-slider {
             position: relative;
             overflow: hidden;
         }
+
         .slider-container {
             display: flex;
             transition: transform 0.3s ease-in-out;
         }
+
         .slider-item {
             min-width: 100%;
             box-sizing: border-box;
         }
+
         .slider-nav {
             position: absolute;
             top: 50%;
@@ -48,15 +56,19 @@
             border: none;
             outline: none;
         }
+
         .slider-nav:hover {
             background-color: rgba(255, 255, 255, 0.9);
         }
+
         .slider-nav-left {
             left: 10px;
         }
+
         .slider-nav-right {
             right: 10px;
         }
+
         .thumbnail-slider {
             display: flex;
             overflow-x: auto;
@@ -64,175 +76,75 @@
             padding: 10px 0;
             scrollbar-width: thin;
         }
+
         .thumbnail-slider::-webkit-scrollbar {
             height: 5px;
         }
+
         .thumbnail-slider::-webkit-scrollbar-thumb {
             background-color: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
         }
+
         .thumbnail {
-            flex: 0 0 50px; /* Adjust to a smaller size */
-            height: 50px; /* Ensure consistent height */
+            flex: 0 0 50px;
+            /* Adjust to a smaller size */
+            height: 50px;
+            /* Ensure consistent height */
             cursor: pointer;
             opacity: 0.7;
             transition: opacity 0.2s;
         }
+
         .thumbnail.active {
             opacity: 1;
             border: 2px solid #0d6efd;
         }
+
         .thumbnail:hover {
             opacity: 1;
         }
-        h1, h2, h3, h4, h5, h6 {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-weight: 500;
         }
+
         .fw-normal {
             font-weight: 400 !important;
         }
+
         .fw-medium {
             font-weight: 500 !important;
         }
     </style>
 </head>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-            // Initialize cart from localStorage
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            updateCartCount();
-            
-            // Make sure the cartButton exists
-            const cartButton = document.getElementById("cartButton");
-            if (cartButton) {
-                cartButton.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    renderCart();
-                    
-                    // Ensure the modal element exists
-                    const cartModalElement = document.getElementById("cartModal");
-                    if (cartModalElement) {
-                        // Initialize the modal properly
-                        const cartModal = new bootstrap.Modal(cartModalElement);
-                        cartModal.show();
-                    } else {
-                        console.error("Cart modal element not found");
-                    }
-                });
-            } else {
-                console.error("Cart button not found");
-            }
-            
-            // Set up buttons for clearing cart
-            const clearCartButton = document.getElementById("clearCart");
-            if (clearCartButton) {
-                clearCartButton.addEventListener("click", function () {
-                    cart = [];
-                    localStorage.removeItem("cart");
-                    renderCart();
-                    updateCartCount();
-                });
-            }
-            
-            // Function to update cart display
-            function renderCart() {
-                const cartItems = document.getElementById("cartItems");
-                if (!cartItems) {
-                    console.error("Cart items container not found");
-                    return;
-                }
-                
-                cartItems.innerHTML = "";
-                if (cart.length === 0) {
-                    cartItems.innerHTML = "<li class='list-group-item text-center'>Giỏ hàng trống</li>";
-                    return;
-                }
-                
-                cart.forEach(item => {
-                    let li = document.createElement("li");
-                    li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
 
-                    li.innerHTML = `
-                        <div class="d-flex align-items-center">
-                            <img src="${item.thumbnail}" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;" alt="${item.name}">
-                            <span>${item.name} x ${item.quantity} || ${formatPrice(item.price)} ₫</span>
-                        </div>
-                        <button class="btn btn-transparent btn-sm remove-item" data-id="${item.id}">🗑️</button>
-                    `;
-
-                    cartItems.appendChild(li);
-                });
-
-                
-                // Add event listeners for remove buttons
-                document.querySelectorAll(".remove-item").forEach(button => {
-                    button.addEventListener("click", function () {
-                        let id = this.getAttribute("data-id");
-                        removeItem(id);
-                    });
-                });
-            }
-            
-            // Function to remove item from cart
-            function removeItem(id) {
-                cart = cart.filter(item => item.id !== id);
-                localStorage.setItem("cart", JSON.stringify(cart));
-                renderCart();
-                updateCartCount();
-            }
-            
-            // Function to update the cart count badge
-            function updateCartCount() {
-                const cartCountElement = document.getElementById("cartCount");
-                if (cartCountElement) {
-                    cartCountElement.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-                }
-            }
-            
-            // Function to format price in VND format
-            function formatPrice(price) {
-                return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            }
-            
-            // Set up add to cart buttons
-            document.querySelectorAll(".addToCart").forEach(button => {
-                button.addEventListener("click", function () {
-                    let id = this.getAttribute("data-id");
-                    let name = this.getAttribute("data-name");
-                    let price = this.getAttribute("data-price");
-                    let thumbnail = this.getAttribute("data-thumbnail")
-                    
-                    let item = cart.find(p => p.id === id);
-                    if (item) {
-                        item.quantity++;
-                    } else {
-                        cart.push({ id, name, price, thumbnail, quantity: 1 });
-                    }
-                    
-                    localStorage.setItem("cart", JSON.stringify(cart));
-                    updateCartCount();
-                    
-                });
-            });
-        });
-</script>
 <body class="d-flex flex-column min-vh-100 bg-light">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
         <div class="container">
             <a class="navbar-brand fw-bold text-uppercase" href="/">YourBrand</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#!">All Products</a></li>
-                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
                             <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                            <li><a class="dropdown-item" href="#!">Tops</a></li>
+                            <li><a class="dropdown-item" href="#!">Shirts</a></li>
                             <li><a class="dropdown-item" href="#!">Bottoms</a></li>
                             <li><a class="dropdown-item" href="#!">Outerwears</a></li>
                             <li><a class="dropdown-item" href="#!">Accessories</a></li>
@@ -240,15 +152,17 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                 </ul>
-    
+
                 <!-- Phần search -->
                 <form class="d-flex me-3">
-                    <input class="form-control form-control-sm border-dark" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control form-control-sm border-dark" type="search" placeholder="Search"
+                        aria-label="Search">
                     <button class="btn btn-dark btn-sm ms-2" type="submit"><i class="bi bi-search"></i></button>
                 </form>
-    
+
                 <div class="d-flex align-items-center gap-3">
-                    <a href="/auth" class="text-dark fw-bold text-uppercase small">Sign In / Register</a>
+                    <a href="/auth" class="text-dark fw-bold text-uppercase small"><i class="bi bi-person-fill fs-4"></i></a>
+                    <!-- <a href="/auth" class="text-dark fw-bold text-uppercase small">Register</a> -->
                     <button id="cartButton" class="btn btn-dark btn-sm ms-2">
                         <i class="bi bi-cart-fill me-1"></i>
                         <span id="cartCount" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
@@ -259,19 +173,23 @@
     </nav>
 
     <!-- Breadcrumb -->
-     <div style="margin-top: 60px;"></div>
+    <div style="margin-top: 60px;"></div>
     <div class="container mt-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item"><a href="#" class="text-decoration-none"><%= product.type%></a></li>
-                <li class="breadcrumb-item active" aria-current="page"><%= product.name %></li>
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">
+                        <%= product.type%>
+                    </a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <%= product.name %>
+                </li>
             </ol>
         </nav>
     </div>
 
     <!-- Main Content -->
-     <!-- for each section -->
+    <!-- for each section -->
     <main class="container main-container py-4 bg-white shadow rounded my-3">
         <div class="row">
             <!-- Product Images Section -->
@@ -281,84 +199,90 @@
                         <i class="fas fa-chevron-left"></i>
                     </button>
                     <div class="slider-container" id="imageSlider">
-                        <% product.images.forEach((img, index) => { %>
+                        <% product.images.forEach((img, index)=> { %>
                             <div class="slider-item" style="height: 575px;">
-                                <img src="<%= img %>" class="img-fluid rounded" alt="<%= product.name %> - View <%= index + 1 %>">
+                                <img src="<%= img %>" class="img-fluid rounded"
+                                    alt="<%= product.name %> - View <%= index + 1 %>">
                             </div>
-                        <% }); %>
+                            <% }); %>
                     </div>
                     <button class="slider-nav slider-nav-right" id="nextSlide">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
-    
+
                 <!-- Thumbnail Images -->
                 <div class="thumbnail-slider mt-3" id="thumbnailSlider">
-                    <% product.images.forEach((img, index) => { %>
+                    <% product.images.forEach((img, index)=> { %>
                         <img src="<%= img %>" class="img-fluid rounded thumbnail <%= index === 0 ? 'active' : '' %>"
                             data-index="<%= index %>" alt="Thumbnail <%= index + 1 %>">
-                    <% }); %>
+                        <% }); %>
                 </div>
             </div>
-    
+
             <!-- Product Details Section -->
             <div class="col-12 col-md-6">
                 <div class="ps-md-4">
                     <!-- Brand -->
                     <div class="text-muted mb-1">YourBrand Collection</div>
-                    
+
                     <!-- Product Title -->
-                    <h2 class="fw-medium mb-2"><%= product.name %></h2>
+                    <h2 class="fw-medium mb-2">
+                        <%= product.name %>
+                    </h2>
 
                     <!-- Price -->
                     <div class="fs-4 mb-3">
-                        <span class="text fw-medium"><p class="fs-5"><%= product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %> ₫</p></span>
+                        <span class="text fw-medium">
+                            <p class="fs-5">
+                                <%= product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "." ) %> ₫
+                            </p>
+                        </span>
                     </div>
-                    
+
                     <!-- Description -->
                     <p class="mb-4">
-                        A premium quality, comfortable cotton t-shirt that's perfect for everyday wear. 
+                        A premium quality, comfortable cotton t-shirt that's perfect for everyday wear.
                         Made from 100% organic cotton with a relaxed fit and breathable fabric.
                     </p>
-                    
+
                     <!-- Size Options -->
                     <div class="mb-4">
                         <h6 class="fw-medium">Size:</h6>
                         <div class="btn-group" role="group" aria-label="Size options">
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeS" autocomplete="off">
+                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeS" value="S"
+                                autocomplete="off">
                             <label class="btn btn-outline-dark" for="sizeS">S</label>
-                            
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeM" autocomplete="off">
+
+                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeM" value="M"
+                                autocomplete="off">
                             <label class="btn btn-outline-dark" for="sizeM">M</label>
-                            
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeL" autocomplete="off">
+
+                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeL" value="L"
+                                autocomplete="off">
                             <label class="btn btn-outline-dark" for="sizeL">L</label>
-                            
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeXL" autocomplete="off">
+
+                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeXL" value="XL"
+                                autocomplete="off">
                             <label class="btn btn-outline-dark" for="sizeXL">XL</label>
                         </div>
-                        <a href="#" class="ms-3 text-decoration-none">Size Guide</a>
                     </div>
-                    
-                    <!-- Quantity and Add to Cart -->
 
-                    <!-- Add to Cart Button -->
                     <div class="d-flex mb-4 align-items-center">
+                        <!-- Quantity -->
                         <div class="input-group me-3" style="width: 130px;">
                             <button class="btn btn-outline-dark" type="button" id="decreaseQuantity">-</button>
                             <input type="text" class="form-control text-center" id="quantityInput" value="1">
                             <button class="btn btn-outline-dark" type="button" id="increaseQuantity">+</button>
                         </div>
-
-                        <button class="btn btn-success flex-grow-1 addToCart"
-                                data-id="<%= product._id %>"
-                                data-name="<%= product.name %>"
-                                data-price="<%= product.price %>"
-                                data-thumbnail="<%= product.thumbnail %>">
+                        <!-- Add to Cart Button -->
+                        <button class="btn btn-success flex-grow-1 addToCart" data-id="<%= product._id %>"
+                            data-name="<%= product.name %>" data-price="<%= product.price %>"
+                            data-thumbnail="<%= product.thumbnail %>">
                             <i class="fas fa-shopping-cart me-2"></i>Add to Cart
                         </button>
                     </div>
-                    
+
                     <!-- Additional Info -->
                     <div class="d-flex flex-wrap mb-4">
                         <div class="me-4 mb-2">
@@ -374,28 +298,37 @@
                             <span>In stock</span>
                         </div>
                     </div>
-                    
-                
+
+
                 </div>
             </div>
         </div>
-        
+
         <!-- Product Details Tabs -->
         <div class="row mt-5">
             <div class="col-12">
                 <ul class="nav nav-tabs" id="productTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
+                        <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
+                            data-bs-target="#description" type="button" role="tab" aria-controls="description"
+                            aria-selected="true">Description</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-controls="details" aria-selected="false">Details</button>
+                        <button class="nav-link" id="details-tab" data-bs-toggle="tab" data-bs-target="#details"
+                            type="button" role="tab" aria-controls="details" aria-selected="false">Details</button>
                     </li>
                 </ul>
                 <div class="tab-content p-4 border border-top-0 rounded-bottom" id="productTabsContent">
-                    <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-                        <p>This premium cotton t-shirt combines style and comfort for everyday wear. Crafted with 100% organic cotton, it features a classic cut with a modern fit that flatters all body types.</p>
-                        <p>The breathable fabric ensures all-day comfort, whether you're running errands or meeting friends for coffee. The relaxed fit provides freedom of movement while maintaining a stylish silhouette.</p>
-                        <p>Pre-shrunk and machine washable, this t-shirt is designed to last through countless wears and washes without losing its shape or color vibrancy.</p>
+                    <div class="tab-pane fade show active" id="description" role="tabpanel"
+                        aria-labelledby="description-tab">
+                        <p>This premium cotton t-shirt combines style and comfort for everyday wear. Crafted with 100%
+                            organic cotton, it features a classic cut with a modern fit that flatters all body types.
+                        </p>
+                        <p>The breathable fabric ensures all-day comfort, whether you're running errands or meeting
+                            friends for coffee. The relaxed fit provides freedom of movement while maintaining a stylish
+                            silhouette.</p>
+                        <p>Pre-shrunk and machine washable, this t-shirt is designed to last through countless wears and
+                            washes without losing its shape or color vibrancy.</p>
                     </div>
                     <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
                         <div class="row">
@@ -415,7 +348,8 @@
                                 <ul class="list-unstyled">
                                     <li class="mb-2"><i class="fas fa-tint text-muted me-2"></i> Machine wash cold</li>
                                     <li class="mb-2"><i class="fas fa-ban text-muted me-2"></i> Do not bleach</li>
-                                    <li class="mb-2"><i class="fas fa-temperature-low text-muted me-2"></i> Tumble dry low</li>
+                                    <li class="mb-2"><i class="fas fa-temperature-low text-muted me-2"></i> Tumble dry
+                                        low</li>
                                     <li class="mb-2"><i class="fas fa-iron text-muted me-2"></i> Iron on low heat</li>
                                     <li class="mb-2"><i class="fas fa-times text-muted me-2"></i> Do not dry clean</li>
                                 </ul>
@@ -426,7 +360,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- You May Also Like Section -->
         <div class="row mt-5">
             <div class="col-12">
@@ -438,55 +372,54 @@
                             <img src="/assets/shirts/Hoodies1.png" class="card-img-top" alt="Related Product 1">
                             <div class="card-body">
                                 <h6 class="card-title ">Slim Fit Jeans</h6>
-                               
+
                                 <p class="fw-medium">600.000</p>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Related Product 2 -->
                     <div class="col">
                         <div class="card h-100">
                             <img src="/assets/shirts/Hoodies2.png" class="card-img-top" alt="Related Product 2">
                             <div class="card-body">
                                 <h6 class="card-title">Casual Hooded Sweatshirt</h6>
-                                
+
                                 <p class="fw-medium">600.000</p>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Related Product 3 -->
                     <div class="col">
                         <div class="card h-100">
                             <img src="/assets/shirts/Shirt1.png" class="card-img-top" alt="Related Product 3">
                             <div class="card-body">
                                 <h6 class="card-title">Long Sleeve Polo Shirt</h6>
-                                
+
                                 <p class="fw-medium">350.000</p>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Related Product 4 -->
                     <div class="col">
                         <div class="card h-100">
                             <img src="/assets/shirts/Tanktop1.png" class="card-img-top" alt="Related Product 4">
                             <div class="card-body">
                                 <h6 class="card-title">Lightweight Jacket</h6>
-                                
+
                                 <p class="fw-medium">200.000</p>
                             </div>
                         </div>
                     </div>
-               </div>
-                </div>
-                </div>
                 </div>
             </div>
         </div>
+        </div>
+        </div>
+        </div>
     </main>
-    
 
     <!-- FOOTER -->
     <footer class="bg-dark text-light py-5 mt-auto ">
@@ -517,7 +450,8 @@
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="#" class="text-light text-decoration-none">Contact Us</a></li>
                         <li class="mb-2"><a href="#" class="text-light text-decoration-none">FAQs</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Returns & Exchanges</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Returns & Exchanges</a>
+                        </li>
                         <li class="mb-2"><a href="#" class="text-light text-decoration-none">Shipping Info</a></li>
                         <li class="mb-2"><a href="#" class="text-light text-decoration-none">Size Guide</a></li>
                     </ul>
@@ -561,9 +495,8 @@
                     <ul id="cartItems" class="list-group"></ul>
                 </div>
                 <div class="modal-footer">
+                    <button id="clearCart" class="btn btn-danger me-auto">Xóa tất cả</button>
                     <a href="/cart" class="btn btn-primary">Go to Cart</a>
-                    <button id="clearCart" class="btn btn-danger">Xóa tất cả</button>
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
@@ -571,87 +504,7 @@
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const sliderContainer = document.getElementById("imageSlider");
-            const sliderItems = document.querySelectorAll(".slider-item");
-            const prevButton = document.getElementById("prevSlide");
-            const nextButton = document.getElementById("nextSlide");
-            const thumbnails = document.querySelectorAll(".thumbnail");
-        
-            let currentIndex = 0;
-        
-            function updateSlider() {
-                const offset = -currentIndex * 100; // Move the slider
-                sliderContainer.style.transform = `translateX(${offset}%)`;
-                thumbnails.forEach((thumb, index) => {
-                    thumb.classList.toggle("active", index === currentIndex);
-                });
-            }
-        
-            nextButton.addEventListener("click", function () {
-                if (currentIndex < sliderItems.length - 1) {
-                    currentIndex++;
-                    updateSlider();
-                }
-            });
-        
-            prevButton.addEventListener("click", function () {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateSlider();
-                }
-            });
-        
-            thumbnails.forEach((thumb, index) => {
-                thumb.addEventListener("click", function () {
-                    currentIndex = index;
-                    updateSlider();
-                });
-            });
-
-            const decreaseButton = document.getElementById('decreaseQuantity');
-            const increaseButton = document.getElementById('increaseQuantity');
-            const quantityInput = document.getElementById('quantityInput');
-
-            const MIN_QUANTITY = 1;
-            const MAX_QUANTITY = 100;
-
-            function updateQuantity(newValue) {
-            let quantity = parseInt(newValue);
-            
-            if (isNaN(quantity)) {
-                quantity = MIN_QUANTITY;
-            }
-            
-            quantity = Math.max(MIN_QUANTITY, quantity);
-            quantity = Math.min(MAX_QUANTITY, quantity);
-            
-            quantityInput.value = quantity;
-            }
-
-            decreaseButton.addEventListener('click', function() {
-            const currentValue = parseInt(quantityInput.value);
-            if (!isNaN(currentValue)) {
-                updateQuantity(currentValue - 1);
-            }
-            });
-
-            increaseButton.addEventListener('click', function() {
-            const currentValue = parseInt(quantityInput.value);
-            if (!isNaN(currentValue)) {
-                updateQuantity(currentValue + 1);
-            }
-            });
-
-            quantityInput.addEventListener('change', function() {
-            updateQuantity(this.value);
-            });
-
-            updateQuantity(quantityInput.value);
-        })
-
-    </script>
-    
+    <script src="/main.js"></script>
 </body>
+
 </html>
