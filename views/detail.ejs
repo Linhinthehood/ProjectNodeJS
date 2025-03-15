@@ -139,25 +139,27 @@
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#!">All Products</a></li>
+                            <li><a class="dropdown-item" href="/">All Products</a></li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
-                            <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                            <li><a class="dropdown-item" href="#!">Shirts</a></li>
-                            <li><a class="dropdown-item" href="#!">Bottoms</a></li>
-                            <li><a class="dropdown-item" href="#!">Outerwears</a></li>
-                            <li><a class="dropdown-item" href="#!">Accessories</a></li>
+                            <li><a class="dropdown-item" href="/">New Arrivals</a></li>
+                            <li><a class="dropdown-item" href="/shirts">Shirts</a></li>
+                            <li><a class="dropdown-item" href="/bottoms">Bottoms</a></li>
+                            <li><a class="dropdown-item" href="/outerwearRouters">Outerwears</a></li>
+                            <li><a class="dropdown-item" href="/accessoriesRouters">Accessories</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/aboutus">About</a></li>
                 </ul>
 
                 <!-- Phần search -->
-                <form class="d-flex me-3">
-                    <input class="form-control form-control-sm border-dark" type="search" placeholder="Search"
-                        aria-label="Search">
-                    <button class="btn btn-dark btn-sm ms-2" type="submit"><i class="bi bi-search"></i></button>
+                <form class="d-flex me-3" action="/search" method="GET">
+                    <input class="form-control form-control-sm border-dark" type="search" name="query" placeholder="Search"
+                        aria-label="Search" required>
+                    <button class="btn btn-dark btn-sm ms-2" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
                 </form>
 
                 <div class="d-flex align-items-center gap-3">

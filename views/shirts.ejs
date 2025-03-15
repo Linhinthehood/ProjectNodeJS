@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Cart</title>
-    <!-- Favicon-->
+    <title>YourBrand</title>
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -16,7 +15,7 @@
 </head>
 <style>
     body {
-        background-color: #f5f5f5;
+        background-color: #fff;
     }
 
     .card {
@@ -70,7 +69,6 @@
         margin: 30px auto;
     }
 </style>
-
 <body>
     <!--cái này là phần Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
@@ -138,6 +136,7 @@
             </div>
         </div>
     </div>
+
     <!-- CSS cho cái navigation -->
     <style>
         .navbar {
@@ -162,125 +161,89 @@
         .text-dark:hover {
             color: #f04e30 !important;
         }
+
+        
     </style>
 
-    <div style="margin-top: 80px;"></div>
-    <main class="container main-container py-4 bg-white shadow rounded my-3">
-        <!-- Main content -->
-        <div class="container mt-5">
-            <h2 class="mb-4">Shopping Cart</h2>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Cart Items</h5>
-                        </div>
-                        <div class="card-body">
-                            <% if (cart && cart.length> 0) { %>
-                                <% cart.forEach(item=> { %>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
-                                            <img src="<%= item.image %>" class="img-fluid" alt="<%= item.name %>">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h5>
-                                                <%= item.name %>
-                                            </h5>
-                                            <p>Price: $<%= item.price %>
-                                            </p>
-                                            <p>Quantity: <%= item.quantity %>
-                                            </p>
-                                        </div>
-                                        <div class="col-md-3 d-flex align-items-center">
-                                            <a href="/cart/remove/<%= item.id %>" class="btn btn-danger">Remove</a>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <% }); %>
-                                        <% } else { %>
-                                            <p>Your cart is empty.</p>
-                                            <% } %>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Order Summary</h5>
-                        </div>
-                        <div class="card-body">
-                            <% if (Array.isArray(cart) && cart.length> 0) { %>
-                                <p>Total Items: <%= cart.reduce((sum, item)=> sum + item.quantity, 0) %></p>
-                                <p>Total Price: $<%= cart.reduce((sum, item)=> sum + item.price * item.quantity,
-                                        0).toFixed(2) %></p>
-                                <a href="/checkout" class="btn btn-primary btn-block">Proceed to Checkout</a>
-                                <% } else { %>
-                                    <p>Your cart is empty.</p>
-                                    <% } %>
-                        </div>
-                    </div>
+ 
+
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="text-center mb-4 pt-4">Shirts Collection</h2> 
+
+            <div class="row mb-3">
+                <div class="col-12 col-md-6 text-start">
+                    <label for="sortSelect" class="fw-bold">Sort by Price:</label>
+                    <select id="sortSelect" class="form-select d-inline-block w-auto">
+                        <option value="">Default</option>
+                        <option value="asc">Low to High</option>
+                        <option value="desc">High to Low</option>
+                    </select>
                 </div>
             </div>
-        </div>
-        <!-- You May Also Like Section -->
-        <div class="container mt-5">
-            <div class="col-12">
-                <h2 class="mb-4">You May Also Like</h2>
-                <div class="row row-cols-2 row-cols-md-4 g-4">
-                    <!-- Related Product 1 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Hoodies1.png" class="card-img-top" alt="Related Product 1">
-                            <div class="card-body">
-                                <h6 class="card-title ">Slim Fit Jeans</h6>
 
-                                <p class="fw-medium">600.000</p>
+            <!-- phần scipt này cho cái nút sort -->
+            <script>
+                document.getElementById("sortSelect").addEventListener("change", function () {
+                    const selectedValue = this.value;
+                    const currentUrl = new URL(window.location.href);
+                    
+                    if (selectedValue) {
+                        currentUrl.searchParams.set("sort", selectedValue);
+                    } else {
+                        currentUrl.searchParams.delete("sort");
+                    }
+            
+                    window.location.href = currentUrl.toString();
+                });
+            
+                // sau khi reload trang thì nó vẫn giữ lại cái lựa chọn
+                const urlParams = new URLSearchParams(window.location.search);
+                const sortValue = urlParams.get("sort");
+                if (sortValue) {
+                    document.getElementById("sortSelect").value = sortValue;
+                }
+            </script>
+            
+            
+         
+            <!-- For each section -->
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <% products.forEach(product=> { %>
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image with a link to the product detail page -->
+                            <a href="/product/<%= product._id %>">
+                                <img class="card-img-top" src="<%= product.thumbnail %>" alt="<%= product.name %>" />
+                            </a>
+                            <!-- Product details -->
+                            <div class="card-body p-4 text-center">
+                                <a href="/product/<%= product._id %>" class="fs-6 text-dark text-decoration-none">
+                                    <%= product.name %>
+                                </a>
+                            </div>
+                            <div class="card-body p-2 text-center">
+                                <p class="fs-5">
+                                    <%= product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "." ) %> ₫
+                                </p>
                             </div>
                         </div>
                     </div>
+                    <% }); %>
+                        <script>
+                            document.querySelectorAll(".product-link").forEach(item => {
+                                item.addEventListener("click", function (event) {
+                                    event.preventDefault();
+                                    console.log("Clicked Product ID:", this.dataset.id);
+                                    window.location.href = this.href; // Navigate to detail page
+                                });
+                            });
+                        </script>
 
-                    <!-- Related Product 2 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Hoodies2.png" class="card-img-top" alt="Related Product 2">
-                            <div class="card-body">
-                                <h6 class="card-title">Casual Hooded Sweatshirt</h6>
-
-                                <p class="fw-medium">600.000</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Related Product 3 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Shirt1.png" class="card-img-top" alt="Related Product 3">
-                            <div class="card-body">
-                                <h6 class="card-title">Long Sleeve Polo Shirt</h6>
-
-                                <p class="fw-medium">350.000</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Related Product 4 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Tanktop1.png" class="card-img-top" alt="Related Product 4">
-                            <div class="card-body">
-                                <h6 class="card-title">Lightweight Jacket</h6>
-
-                                <p class="fw-medium">200.000</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
-        </div>
-        </div>
-        </div>
-    </main>
+    </section>
     <!-- FOOTER -->
     <footer class="bg-dark text-light py-5 mt-auto ">
         <div class="container">
