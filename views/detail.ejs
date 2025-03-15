@@ -161,7 +161,8 @@
                 </form>
 
                 <div class="d-flex align-items-center gap-3">
-                    <a href="/auth" class="text-dark fw-bold text-uppercase small"><i class="bi bi-person-fill fs-4"></i></a>
+                    <a href="/auth" class="text-dark fw-bold text-uppercase small"><i
+                            class="bi bi-person-fill fs-4"></i></a>
                     <!-- <a href="/auth" class="text-dark fw-bold text-uppercase small">Register</a> -->
                     <button id="cartButton" class="btn btn-dark btn-sm ms-2">
                         <i class="bi bi-cart-fill me-1"></i>
@@ -246,58 +247,60 @@
                         Made from 100% organic cotton with a relaxed fit and breathable fabric.
                     </p>
 
-                    <!-- Size Options -->
-                    <div class="mb-4">
-                        <h6 class="fw-medium">Size:</h6>
-                        <div class="btn-group" role="group" aria-label="Size options">
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeS" value="S"
-                                autocomplete="off">
-                            <label class="btn btn-outline-dark" for="sizeS">S</label>
+                    <!-- Conditionally Show Size Options -->
+                    <% if (product.type !=="Accessories" ) { %>
+                        <div class="mb-4">
+                            <h6 class="fw-medium">Size:</h6>
+                            <div class="btn-group" role="group" aria-label="Size options">
+                                <input type="radio" class="btn-check" name="sizeOptions-<%= product._id %>"
+                                    id="sizeS-<%= product._id %>" value="S" autocomplete="off">
+                                <label class="btn btn-outline-dark" for="sizeS-<%= product._id %>">S</label>
 
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeM" value="M"
-                                autocomplete="off">
-                            <label class="btn btn-outline-dark" for="sizeM">M</label>
+                                <input type="radio" class="btn-check" name="sizeOptions-<%= product._id %>"
+                                    id="sizeM-<%= product._id %>" value="M" autocomplete="off">
+                                <label class="btn btn-outline-dark" for="sizeM-<%= product._id %>">M</label>
 
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeL" value="L"
-                                autocomplete="off">
-                            <label class="btn btn-outline-dark" for="sizeL">L</label>
+                                <input type="radio" class="btn-check" name="sizeOptions-<%= product._id %>"
+                                    id="sizeL-<%= product._id %>" value="L" autocomplete="off">
+                                <label class="btn btn-outline-dark" for="sizeL-<%= product._id %>">L</label>
 
-                            <input type="radio" class="btn-check" name="sizeOptions" id="sizeXL" value="XL"
-                                autocomplete="off">
-                            <label class="btn btn-outline-dark" for="sizeXL">XL</label>
+                                <input type="radio" class="btn-check" name="sizeOptions-<%= product._id %>"
+                                    id="sizeXL-<%= product._id %>" value="XL" autocomplete="off">
+                                <label class="btn btn-outline-dark" for="sizeXL-<%= product._id %>">XL</label>
+                            </div>
                         </div>
-                    </div>
+                        <% } %>
 
-                    <div class="d-flex mb-4 align-items-center">
-                        <!-- Quantity -->
-                        <div class="input-group me-3" style="width: 130px;">
-                            <button class="btn btn-outline-dark" type="button" id="decreaseQuantity">-</button>
-                            <input type="text" class="form-control text-center" id="quantityInput" value="1">
-                            <button class="btn btn-outline-dark" type="button" id="increaseQuantity">+</button>
-                        </div>
-                        <!-- Add to Cart Button -->
-                        <button class="btn btn-success flex-grow-1 addToCart" data-id="<%= product._id %>"
-                            data-name="<%= product.name %>" data-price="<%= product.price %>"
-                            data-thumbnail="<%= product.thumbnail %>">
-                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-                        </button>
-                    </div>
+                            <div class="d-flex mb-4 align-items-center">
+                                <!-- Quantity -->
+                                <div class="input-group me-3" style="width: 130px;">
+                                    <button class="btn btn-outline-dark" type="button" id="decreaseQuantity">-</button>
+                                    <input type="text" class="form-control text-center" id="quantityInput" value="1">
+                                    <button class="btn btn-outline-dark" type="button" id="increaseQuantity">+</button>
+                                </div>
+                                <!-- Add to Cart Button -->
+                                <button class="btn btn-success flex-grow-1 addToCart" data-id="<%= product._id %>"
+                                    data-name="<%= product.name %>" data-price="<%= product.price %>"
+                                    data-thumbnail="<%= product.thumbnail %>">
+                                    <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                                </button>
+                            </div>
 
-                    <!-- Additional Info -->
-                    <div class="d-flex flex-wrap mb-4">
-                        <div class="me-4 mb-2">
-                            <i class="fas fa-truck text-muted me-2"></i>
-                            <span>Free shipping</span>
-                        </div>
-                        <div class="me-4 mb-2">
-                            <i class="fas fa-undo text-muted me-2"></i>
-                            <span>30 days return</span>
-                        </div>
-                        <div class="mb-2">
-                            <i class="fas fa-check-circle text-muted me-2"></i>
-                            <span>In stock</span>
-                        </div>
-                    </div>
+                            <!-- Additional Info -->
+                            <div class="d-flex flex-wrap mb-4">
+                                <div class="me-4 mb-2">
+                                    <i class="fas fa-truck text-muted me-2"></i>
+                                    <span>Free shipping</span>
+                                </div>
+                                <div class="me-4 mb-2">
+                                    <i class="fas fa-undo text-muted me-2"></i>
+                                    <span>30 days return</span>
+                                </div>
+                                <div class="mb-2">
+                                    <i class="fas fa-check-circle text-muted me-2"></i>
+                                    <span>In stock</span>
+                                </div>
+                            </div>
 
 
                 </div>
