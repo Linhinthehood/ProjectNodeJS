@@ -106,6 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let name = this.getAttribute("data-name");
             let price = parseFloat(this.getAttribute("data-price"));
             let thumbnail = this.getAttribute("data-thumbnail");
+            let type = this.getAttribute("data-type");
             let quantity = parseInt(document.getElementById("quantityInput").value, 10);
 
             // Get selected size
@@ -114,6 +115,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (!quantity || quantity < 1) {
                 alert("Vui lòng nhập số lượng hợp lệ.");
+                return;
+            }
+
+            if (type !== "Accessories" && size === "No Size"){
+                alert("Please select size !")
                 return;
             }
 

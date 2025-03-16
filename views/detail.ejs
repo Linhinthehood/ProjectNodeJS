@@ -253,7 +253,7 @@
                     <% if (product.type !=="Accessories" ) { %>
                         <div class="mb-4">
                             <h6 class="fw-medium">Size:</h6>
-                            <div class="btn-group" role="group" aria-label="Size options">
+                            <div class="btn-group" role="group" aria-label="Size options" id="sizeInput">
                                 <input type="radio" class="btn-check" name="sizeOptions-<%= product._id %>"
                                     id="sizeS-<%= product._id %>" value="S" autocomplete="off">
                                 <label class="btn btn-outline-dark" for="sizeS-<%= product._id %>">S</label>
@@ -283,7 +283,7 @@
                                 <!-- Add to Cart Button -->
                                 <button class="btn btn-success flex-grow-1 addToCart" data-id="<%= product._id %>"
                                     data-name="<%= product.name %>" data-price="<%= product.price %>"
-                                    data-thumbnail="<%= product.thumbnail %>">
+                                    data-thumbnail="<%= product.thumbnail %>" data-type="<%= product.type %>">
                                     <i class="fas fa-shopping-cart me-2"></i>Add to Cart
                                 </button>
                             </div>
