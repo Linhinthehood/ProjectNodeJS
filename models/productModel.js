@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
   },
   thumbnail: { type: String, required: true },
   images: [{ type: String }], 
-  type: { type: String, enum: ["shirts", "bottoms", "accessories", "outerwears"], required: true }
+  type: { type: String, enum: ["Shirts", "Bottoms", "Accessories", "Outerwears"], required: true }
 });
 
 // exports.Product = mongoose.model("Product", productSchema);

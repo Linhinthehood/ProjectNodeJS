@@ -1,279 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Shop Homepage - Start Bootstrap Template</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="styles.css" rel="stylesheet" />
-    </head>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            updateCartCount();
-        
-            // Xử lý sự kiện khi nhấn "ADD TO CART"
-            document.querySelectorAll(".addToCart").forEach(button => {
-                button.addEventListener("click", function () {
-                    let id = this.getAttribute("data-id");
-                    let name = this.getAttribute("data-name");
-                    let price = this.getAttribute("data-price");
-        
-                    let item = cart.find(p => p.id === id); 
-                    if (item) {
-                        item.quantity++;
-                    } else {
-                        cart.push({ id, name, price, quantity: 1 });
-                    }
-        
-                    localStorage.setItem("cart", JSON.stringify(cart));
-                    updateCartCount();
-                });
-            });
-        
-            // Khi nhấn nút giỏ hàng,thì nó sẽ hiển thị danh sách sản phẩm trong modal
-            document.getElementById("cartButton").addEventListener("click", function () {
-                renderCart();
-                let cartModal = new bootstrap.Modal(document.getElementById("cartModal"));
-                cartModal.show();
-            });
-        
-            // Xóa từng cái khỏi cái giỏ hàng
-            function removeItem(id) {
-                cart = cart.filter(item => item.id !== id);
-                localStorage.setItem("cart", JSON.stringify(cart));
-                renderCart();
-                updateCartCount();
-            }
-        
-            // Xóa tất cả sản phẩm
-            document.getElementById("clearCart").addEventListener("click", function () {
-                cart = [];
-                localStorage.removeItem("cart");
-                renderCart();
-                updateCartCount();
-            });
-        
-            // cập nhật lại cái phần giỏ
-            function renderCart() {
-                let cartItems = document.getElementById("cartItems");
-                cartItems.innerHTML = "";
-                if (cart.length === 0) {
-                    cartItems.innerHTML = "<li class='list-group-item text-center'>Giỏ hàng trống</li>";
-                    return;
-                }
-                cart.forEach(item => {
-                    let li = document.createElement("li");
-                    li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
-                    li.innerHTML = `
-                        ${item.name} - ${item.quantity} x $${item.price}
-                        <button class="btn btn-danger btn-sm remove-item" data-id="${item.id}">🗑️</button>
-                    `;
-                    cartItems.appendChild(li);
-                });
-        
-                // Thêm sự kiện xóa sản phẩm cho từng nút
-                document.querySelectorAll(".remove-item").forEach(button => {
-                    button.addEventListener("click", function () {
-                        let id = this.getAttribute("data-id");
-                        removeItem(id);
-                    });
-                });
-            }
-        
-            // Cập nhật số lượng hiển thị trên giỏ hàng
-            function updateCartCount() {
-                document.getElementById("cartCount").textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-            }
-        });
-    </script>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>YourBrand</title>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Core theme CSS (includes Bootstrap)-->
+</head>
+<style>
+    body {
+        background-color: #fff;
+    }
 
-    <style>
-        body {
-        background-color: #f5f5f5;
-        }
-
-        .card {
+    .card {
         border: none;
         box-shadow: none !important;
         transition: 0.3s;
-        }
+    }
 
-        .card:hover {
+    .card:hover {
         transform: translateY(-5px);
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-        }
+    }
 
-        .card h5 {
+    .card h5 {
         font-family: 'Anton', sans-serif;
         text-transform: uppercase;
         letter-spacing: 1px;
-        }
+    }
 
-        .card:hover .card-img-top {
+    .card:hover .card-img-top {
         filter: grayscale(0%);
-        }
+    }
 
-        .badge {
+    .badge {
         background: black;
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 1px;
-        }
+    }
 
-        .btn-outline-dark {
+    .btn-outline-dark {
         font-family: 'Anton', sans-serif;
         border: 2px solid black;
         text-transform: uppercase;
         transition: 0.3s;
-        }
+    }
 
-        .btn-outline-dark:hover {
+    .btn-outline-dark:hover {
         background: black;
         color: white;
-        }
+    }
 
-        *,
-        *::before,
-        *::after {
+    *,
+    *::before,
+    *::after {
         box-sizing: border-box;
-        }
-    </style>
+    }
 
-    <body>
-        <!--cái này là phần Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
-            <div class="container">
-                <a class="navbar-brand fw-bold text-uppercase" href="/index">YourBrand</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#!">All Products</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                                <li><a class="dropdown-item" href="#!">Shirts</a></li>
-                                <li><a class="dropdown-item" href="#!">Bottoms</a></li>
-                                <li><a class="dropdown-item" href="#!">Outerwears</a></li>
-                                <li><a class="dropdown-item" href="#!">Accessories</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                    </ul>
+    .main-container {
+        max-width: 1200px;
+        margin: 30px auto;
+    }
+</style>
+<body>
+    <!--cái này là phần Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-uppercase" href="/">YourBrand</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/">All Products</a></li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li><a class="dropdown-item" href="/">New Arrivals</a></li>
+                            <li><a class="dropdown-item" href="/shirts">Shirts</a></li>
+                            <li><a class="dropdown-item" href="/bottoms">Bottoms</a></li>
+                            <li><a class="dropdown-item" href="/outerwearRouters">Outerwears</a></li>
+                            <li><a class="dropdown-item" href="/accessoriesRouters">Accessories</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/aboutus">About</a></li>
+                </ul>
 
-                    <!-- Phần search -->
-                    <form class="d-flex me-3">
-                        <input class="form-control form-control-sm border-dark" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-dark btn-sm ms-2" type="submit"><i class="bi bi-search"></i></button>
-                    </form>
+                <!-- Phần search -->
+                <form class="d-flex me-3" action="/search" method="GET">
+                    <input class="form-control form-control-sm border-dark" type="search" name="query" placeholder="Search"
+                        aria-label="Search" required>
+                    <button class="btn btn-dark btn-sm ms-2" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+                
 
-                    <div class="d-flex align-items-center gap-3">
-                        <a href="/auth" class="text-dark fw-bold text-uppercase small">Sign In / Register</a>
-                        <!-- <a href="/auth" class="text-dark fw-bold text-uppercase small">Register</a> -->
-                        <button id="cartButton" class="btn btn-dark btn-sm ms-2">
-                            <i class="bi bi-cart-fill me-1"></i>
-                            <span id="cartCount" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </nav>
-        <!-- Modal giỏ hàng -->
-        <div id="cartModal" class="modal fade" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Giỏ hàng</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <ul id="cartItems" class="list-group"></ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="clearCart" class="btn btn-danger">Xóa tất cả</button>
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    </div>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="/auth" class="text-dark fw-bold text-uppercase small"><i class="bi bi-person-fill fs-4"></i></a>
+                    <!-- <a href="/auth" class="text-dark fw-bold text-uppercase small">Register</a> -->
+                    <button id="cartButton" class="btn btn-dark btn-sm ms-2">
+                        <i class="bi bi-cart-fill me-1"></i>
+                        <span id="cartCount" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    </button>
                 </div>
             </div>
         </div>
+    </nav>
+    <!-- Modal giỏ hàng -->
+    <div id="cartModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Giỏ hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="cartItems" class="list-group"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button id="clearCart" class="btn btn-danger me-auto">Xóa tất cả</button>
+                    <a href="/cart" class="btn btn-primary">Go to Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- CSS cho cái navigation -->
+    <style>
+        .navbar {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .navbar.fixed-top {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .form-control:focus {
+            border-color: #f04e30;
+            box-shadow: 0 0 5px rgba(240, 78, 48, 0.5);
+        }
+
+        .btn-dark:hover {
+            background-color: #f04e30;
+            border-color: #f04e30;
+        }
+
+        .text-dark:hover {
+            color: #f04e30 !important;
+        }
+    </style>
 
     
-        <!-- CSS cho cái navigation -->
-        <style>
-            .navbar {
-                transition: all 0.3s ease-in-out;
-            }
 
-            .navbar.fixed-top {
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                background-color: rgba(255, 255, 255, 0.95);
-            }
-
-            .form-control:focus {
-                border-color: #f04e30;
-                box-shadow: 0 0 5px rgba(240, 78, 48, 0.5);
-            }
-
-            .btn-dark:hover {
-                background-color: #f04e30;
-                border-color: #f04e30;
-            }
-
-            .text-dark:hover {
-                color: #f04e30 !important;
-            }
-        </style>
-
-        
-        
-       <!-- Header -->
-        <style>
+    <!-- Header -->
+    <style>
         .carousel-item img {
             filter: contrast(1.2) brightness(0.9) saturate(1.1);
             transition: transform 0.8s ease-in-out;
         }
+
         .carousel-item.active img {
             transform: scale(1.05);
         }
-        .carousel-control-prev-icon, .carousel-control-next-icon {
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
             background-color: black;
             border-radius: 50%;
             padding: 10px;
         }
+
         .carousel-indicators li {
             background-color: white;
             width: 12px;
             height: 12px;
             border-radius: 50%;
         }
+
         .carousel-inner img {
-                max-height: 1300px; 
-                object-fit: cover; 
-            }
-        </style>
+            max-height: 1300px;
+            object-fit: cover;
+        }
+    </style>
+    <% if (typeof isSearch !== "undefined" && !isSearch) { %>
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="d-block h-80 w-100" src="/assets/slide/slide-img2.webp" alt="First slide" >
+                    <img class="d-block h-80 w-100" src="/assets/slide/slide-img2.webp" alt="First slide">
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block  h-80 w-100" src="/assets/slide/slide-img3.jpg" alt="Second slide">
+                    <img class="d-block h-80 w-100" src="/assets/slide/slide-img3.jpg" alt="Second slide">
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block  h-80 w-100" src="/assets/slide/slide-img5.webp" alt="Third slide">
+                    <img class="d-block h-80 w-100" src="/assets/slide/slide-img5.webp" alt="Third slide">
                 </div>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
@@ -283,48 +216,89 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
             </a>
         </div>
+    <% } %>
+    
 
-        <!-- Section-->
-        <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <!-- For each section -->
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <% products.forEach(product => { %>
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <!-- Product image with a link to the product detail page -->
-                                <a href="/detail/<%= product._id %>">
-                                    <img class="card-img-top" src="<%= product.thumbnail %>" alt="<%= product.name %>" />
+
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row mb-3">
+                <div class="col-12 col-md-6 text-start">
+                    <label for="sortSelect" class="fw-bold">Sort by Price:</label>
+                    <select id="sortSelect" class="form-select d-inline-block w-auto">
+                        <option value="">Default</option>
+                        <option value="asc">Low to High</option>
+                        <option value="desc">High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- phần scipt này cho cái nút sort -->
+            <script>
+                document.getElementById("sortSelect").addEventListener("change", function () {
+                    const selectedValue = this.value;
+                    const currentUrl = new URL(window.location.href);
+                    
+                    if (selectedValue) {
+                        currentUrl.searchParams.set("sort", selectedValue);
+                    } else {
+                        currentUrl.searchParams.delete("sort");
+                    }
+            
+                    window.location.href = currentUrl.toString();
+                });
+            
+                // sau khi reload trang thì nó vẫn giữ lại cái lựa chọn
+                const urlParams = new URLSearchParams(window.location.search);
+                const sortValue = urlParams.get("sort");
+                if (sortValue) {
+                    document.getElementById("sortSelect").value = sortValue;
+                }
+            </script>
+            
+            <!-- For each section -->
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <% products.forEach(product=> { %>
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image with a link to the product detail page -->
+                            <a href="/product/<%= product._id %>">
+                                <img class="card-img-top" src="<%= product.thumbnail %>" alt="<%= product.name %>" />
+                            </a>
+                            <!-- Product details -->
+                            <div class="card-body p-4 text-center">
+                                <a href="/product/<%= product._id %>" class="fs-6 text-dark text-decoration-none">
+                                    <%= product.name %>
                                 </a>
-                                <!-- Product details -->
-                                <div class="card-body p-4 text-center">
-                                    <a href="/detail/<%= product._id %>" class="fs-5 text-dark text-decoration-none">
-                                        <%= product.name %>
-                                    </a>
-                                    <span><%= product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %> ₫</span>
-                                </div>
-                                <!-- Product actions -->
-                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                    <div class="text-center">
-                                        <button class="btn btn-outline-dark mt-auto addToCart"
-                                                data-id="<%= product._id %>"
-                                                data-name="<%= product.name %>"
-                                                data-price="<%= product.price %>">
-                                            ADD TO CART
-                                        </button>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="card-body p-2 text-center">
+                                <p class="fs-5">
+                                    <%= product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "." ) %> ₫
+                                </p>
                             </div>
                         </div>
+                    </div>
                     <% }); %>
-                </div>
-                
+                        <script>
+                            document.querySelectorAll(".product-link").forEach(item => {
+                                item.addEventListener("click", function (event) {
+                                    event.preventDefault();
+                                    console.log("Clicked Product ID:", this.dataset.id);
+                                    window.location.href = this.href; // Navigate to detail page
+                                });
+                            });
+                        </script>
+
             </div>
-        </section>
+        </div>
+    </section>
 
 
-        <!-- FOOTER -->
-    <footer class="bg-dark text-light py-5 mt-auto">
+
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-light py-5 mt-auto ">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-md-4 mb-4 mb-md-0">
@@ -352,7 +326,8 @@
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="#" class="text-light text-decoration-none">Contact Us</a></li>
                         <li class="mb-2"><a href="#" class="text-light text-decoration-none">FAQs</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Returns & Exchanges</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Returns & Exchanges</a>
+                        </li>
                         <li class="mb-2"><a href="#" class="text-light text-decoration-none">Shipping Info</a></li>
                         <li class="mb-2"><a href="#" class="text-light text-decoration-none">Size Guide</a></li>
                     </ul>
@@ -383,15 +358,16 @@
             </div>
         </div>
     </footer>
-        
-        <style>
-            footer a:hover {
-                color: #f04e30;
-                transition: 0.3s;
-            }
-        </style>
-        
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- <script src="js/scripts.js"></script> -->
-    </body>
+
+    <style>
+        footer a:hover {
+            color: #f04e30;
+            transition: 0.3s;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/main.js"></script>
+</body>
+
 </html>
