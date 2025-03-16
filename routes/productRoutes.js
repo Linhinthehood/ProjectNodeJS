@@ -22,4 +22,7 @@ router.get("/search", productController.searchProducts);
 
 router.get('/cart', productController.getCart);
 
+router.get('/checkout', productController.getCheckOut);
+
+
 module.exports = router;

@@ -7,10 +7,12 @@ const session = require('express-session');
 
 const app = express();
 
+// Cấu hình session middleware (MemoryStore)
 app.use(session({
-  secret: 'yourSecretKey',
+  secret: process.env.SESSION_SECRET || 'secret',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 } // Session sống 1 ngày
 }));
 
 // Load biến môi trường
@@ -53,16 +55,7 @@ app.use('/', accessories_page);
 const aboutus_page = require('./routes/aboutusRouters');
 app.use('/', aboutus_page);
 
-
-
-app.get('/cart', (req, res) => {
-  if (!req.session.cart) {
-    req.session.cart = []; // Initialize cart if undefined
-  }
-  res.render('cart', { cart: req.session.cart });
-});
-
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port http://localhost:${PORT}`);
 });

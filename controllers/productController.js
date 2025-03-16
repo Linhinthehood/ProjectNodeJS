@@ -1,7 +1,13 @@
 const Product = require("../models/productModel");
+const User = require("../models/userModel");
 
 exports.getAllProducts = async (req, res) => {
   try {
+    // Check if user is logged in
+    // if(!req.session.user) {
+    //   res.redirect('/auth');
+    // }
+
     console.log("Attempting to fetch products...");
 
     let filter = {};
@@ -29,7 +35,7 @@ exports.getAllProducts = async (req, res) => {
       console.log("No products found in database");
     }
     
-    res.render("index", { products });
+    res.render("index", { products, user: req.session.user });
   } catch (error) {
     console.error("Error in getAllProducts:", error);
     res.status(500).json({ message: "Server error", error: error.toString() });
@@ -46,7 +52,7 @@ exports.getProductByID = async (req, res) => {
     if (!Array.isArray(product.images)) {
       product.images = [product.images]; // Convert single image to array
     }
-    res.render("detail", { product });
+    res.render("detail", { product, user: req.session.user  });
   } catch (error) {
     console.error("Error fetching product details:", error);
     res.status(500).send("Server error");
@@ -72,7 +78,7 @@ exports.getShirts = async (req, res) => {
       console.log("No shirts found in database");
     }
     
-    res.render("shirts", { products });
+    res.render("shirts", { products, user: req.session.user });
   } catch (error) {
     console.error("Error in getShirts:", error);
     res.status(500).json({ message: "Server error", error: error.toString() });
@@ -99,7 +105,7 @@ exports.getBottoms = async (req, res) => {
       console.log("No Bottoms found in database");
     }
     
-    res.render("bottoms", { products }); // Đảm bảo render đúng file `bottoms.ejs`
+    res.render("bottoms", { products, user: req.session.user  }); // Đảm bảo render đúng file `bottoms.ejs`
   } catch (error) {
     console.error("Error in getBottoms:", error);
     res.status(500).json({ message: "Server error", error: error.toString() });
@@ -127,26 +133,12 @@ exports.searchProducts = async (req, res) => {
       return res.redirect("/"); // Nếu không tìm thấy sản phẩm, quay về trang index
     }
 
-    res.render("index", { products, isSearch: true }); 
+    res.render("index", { products, isSearch: true, user: req.session.user  }); 
   } catch (error) {
     console.error("Error in searchProducts:", error);
     res.status(500).json({ message: "Server error", error: error.toString() });
   }
 };
-
-
-
-
-
-exports.getCart = async (req,res) => {
-  try {
-    const cart = req.session || [];
-    res.render('cart', {cart});
-  } catch (error){
-      console.error("Error fetching cart:", error);
-      res.status(500).send("Error loading cart");
-  }
-}
 
 
 exports.getAccessories = async (req, res) => {
@@ -168,7 +160,7 @@ exports.getAccessories = async (req, res) => {
       console.log("No Accessories found in database");
     }
 
-    res.render("accessories", { products }); // Đảm bảo render đúng file `accessories.ejs`
+    res.render("accessories", { products, user: req.session.user  }); // Đảm bảo render đúng file `accessories.ejs`
   } catch (error) {
     console.error("Error in getAccessories:", error);
     res.status(500).json({ message: "Server error", error: error.toString() });
@@ -194,9 +186,35 @@ exports.getOuterwears = async (req, res) => {
       console.log("No Outerwears found in database");
     }
 
-    res.render("outerwears", { products }); // Đảm bảo render đúng file `outerwears.ejs`
+    res.render("outerwears", { products, user: req.session.user  }); // Đảm bảo render đúng file `outerwears.ejs`
   } catch (error) {
     console.error("Error in getOuterwears:", error);
     res.status(500).json({ message: "Server error", error: error.toString() });
+  }
+};
+
+
+exports.getCart = async (req,res) => {
+  try {
+    const cart = req.session.cart || [];
+    console.log("Cart:", cart);
+    res.render('cart', {cart, user: req.session.user });
+  } catch (error){
+      console.error("Error fetching cart:", error);
+      res.status(500).send("Error loading cart");
+  }
+}
+
+exports.getCheckOut = async (req, res) => {
+  try {
+    if(!req.session.user) {
+      return res.redirect('/auth');
+    }
+    const cart = req.session.cart || [];
+    console.log("Cart:", cart);
+    res.render('checkout', {cart, user: req.session.user });
+  } catch (error){
+      console.error("Error fetching cart:", error);
+      res.status(500).send("Error loading cart");
   }
 };

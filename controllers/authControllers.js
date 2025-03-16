@@ -1,6 +1,7 @@
 // controllers/authController.js
 
 const User = require('../models/userModel');
+// const Product = require('../models/productModel');
 
 /**
  * GET /auth
@@ -18,6 +19,7 @@ exports.getAuthPage = (req, res) => {
 exports.postRegister = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
+    // let products = await Product.find();
 
     // Kiểm tra email đã tồn tại?
     const existingUser = await User.findOne({ email });
@@ -28,9 +30,18 @@ exports.postRegister = async (req, res) => {
     // Tạo user mới
     const newUser = new User({ name, email, password, phone });
     await newUser.save();
+    console.log("New user created:", newUser);
 
-    // Ví dụ: chuyển hướng về trang auth
-    return res.redirect('/auth');
+    // Lưu thông tin user vào session để tự động đăng nhập
+    req.session.user = {
+      id: newUser._id,
+      name: newUser.name,
+      email: newUser.email
+    };
+    console.log("User logged in:", req.session.user);
+
+    // Chuyển hướng về trang chủ
+    return res.redirect("/");
   } catch (err) {
     console.error(err);
     return res.status(500).send('Server error');
@@ -44,6 +55,7 @@ exports.postRegister = async (req, res) => {
 exports.postLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    // let products = await Product.find();
 
     // Tìm user theo email
     const user = await User.findOne({ email });
@@ -57,8 +69,17 @@ exports.postLogin = async (req, res) => {
     }
 
     // Nếu đúng => đăng nhập thành công
+    // Lưu thông tin đăng nhập vào session
+    req.session.user = {
+      id: user._id,
+      name: user.name,
+      email: user.email
+      // Thêm các thông tin khác nếu cần
+    };
+    console.log("User logged in:", req.session.user);
+
     // Tùy ý: tạo session, JWT, v.v.
-    return res.send('Login success!');
+    return res.redirect("/");
   } catch (err) {
     console.error(err);
     return res.status(500).send('Server error');
