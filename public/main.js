@@ -275,8 +275,57 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.reload();
     }
 
+    // Function to render cart in checkout page
+    function renderCheckoutCart() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Tìm phần tử chứa danh sách sản phẩm trong checkout
+        const checkoutCartContainer = document.getElementById("checkoutCart");
+        if (!checkoutCartContainer) {
+            console.error("Checkout cart container not found");
+            return;
+        }
+
+        // Xóa nội dung cũ
+        checkoutCartContainer.innerHTML = "";
+
+        if (cart.length === 0) {
+            checkoutCartContainer.innerHTML = "<p class='text-center'>Giỏ hàng trống</p>";
+            return;
+        }
+
+        // Render từng sản phẩm
+        cart.forEach(item => {
+            const itemElement = document.createElement("div");
+            itemElement.className = "row mb-3";
+            itemElement.innerHTML = `
+            <div class="col-md-3">
+                <img src="${item.thumbnail}" class="img-fluid" alt="${item.name}">
+            </div>
+            <div class="col-md-6">
+                <h5>${item.name}</h5>
+                ${item.size && item.size !== "No Size" ? `<p>Size: ${item.size}</p>` : ""}
+                <p>Quantity: ${item.quantity}</p>
+                <p>${formatPrice(item.price)} ₫</p>
+            </div>
+        `;
+            checkoutCartContainer.appendChild(itemElement);
+            checkoutCartContainer.appendChild(document.createElement("hr")); // Thêm đường kẻ ngang giữa các sản phẩm
+        });
+
+        // Cập nhật tổng số tiền
+        const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const totalElement = document.getElementById("checkoutTotal");
+        if (totalElement) {
+            totalElement.innerHTML = `Tổng cộng: <strong>${formatPrice(totalPrice)} ₫</strong>`;
+        }
+    }
+
+
+
     // Hàm định dạng giá tiền (VND)
     function formatPrice(price) {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
+
 });
