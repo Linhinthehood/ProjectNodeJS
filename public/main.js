@@ -6,22 +6,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Handle Cart Button Click
     const cartButton = document.getElementById("cartButton");
-    if (cartButton) {
-        cartButton.addEventListener("click", function (event) {
-            event.preventDefault();
-            renderCart();
+    cartButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        renderCart();
 
-            const cartModalElement = document.getElementById("cartModal");
-            if (cartModalElement) {
-                const cartModal = new bootstrap.Modal(cartModalElement);
-                cartModal.show();
-            } else {
-                console.error("Cart modal element not found");
-            }
-        });
-    } else {
-        console.error("Cart button not found");
-    }
+        const cartModalElement = document.getElementById("cartModal");
+        if (cartModalElement) {
+            const cartModal = new bootstrap.Modal(cartModalElement);
+            cartModal.show();
+        } else {
+            console.error("Cart modal element not found");
+        }
+    });
+
 
     // Clear Cart Button
     const clearCartButton = document.getElementById("clearCart");
@@ -265,7 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             orderSummaryContainer.innerHTML = `
         <p>Total Items: ${totalItems}</p>
-        <p>Total Price: ${formatPrice(totalPrice)} ₫</p>
+        <p>Total Price: ${formatPrice(totalPrice)}</p>
         <a href="/checkout" class="btn btn-primary btn-block">Proceed to Checkout</a>
     `;
         }
@@ -281,8 +278,54 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.reload();
     }
 
-    // Hàm định dạng giá tiền (VND)
+    // Helper function to format price
     function formatPrice(price) {
-        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+    }
+
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const cartItemsContainer = document.getElementById("cartItemsContainer");
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if (cart.length > 0) {
+        let totalItems = 0;
+        let totalPrice = 0;
+
+        cart.forEach(item => {
+            totalItems += item.quantity;
+            totalPrice += item.price * item.quantity;
+
+            const itemHTML = `
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <img src="${item.thumbnail}" class="img-fluid" alt="${item.name}">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>${item.name}</h5>
+                        ${item.size && item.size !== 'No Size' ? `<p>Size: ${item.size}</p>` : ''}
+                        <p>Quantity: ${item.quantity}</p>
+                        <p>${formatPrice(item.price)}</p>
+                    </div>
+                </div>
+                <hr>
+            `;
+            cartItemsContainer.insertAdjacentHTML("beforeend", itemHTML);
+        });
+
+        const summaryHTML = `
+            <p>Total Items: ${totalItems}</p>
+            <p>Total Price: ${formatPrice(totalPrice)}</p>
+            <a href="/place-order" class="btn btn-success w-100 mt-3" id="placeOrderBtn">Place Order</a>
+        `;
+        cartItemsContainer.insertAdjacentHTML("beforeend", summaryHTML);
+    } else {
+        cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
     }
 });
+
+// Helper function to format price
+function formatPrice(price) {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+}

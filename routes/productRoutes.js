@@ -20,6 +20,13 @@ router.get("/outerwearRouters",productController.getOuterwears)
 router.get("/search", productController.searchProducts);
 
 
+
+// Router for cart & checkout:
+router.post('/cart/add', productController.addToCart);
+router.delete('/cart/remove/:id', productController.removeFromCart);
+router.delete('/cart/clear', productController.clearCart);
 router.get('/cart', productController.getCart);
+router.get('/checkout', productController.getCheckout);
+
 
 module.exports = router;
