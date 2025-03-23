@@ -55,6 +55,9 @@ app.use('/', accessories_page);
 const aboutus_page = require('./routes/aboutusRouters');
 app.use('/', aboutus_page);
 
+const profile_page = require('./routes/profileRoute');
+app.use('/', profile_page);
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is running on port http://localhost:${PORT}`);

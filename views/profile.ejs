@@ -181,120 +181,20 @@
 
     <div style="margin-top: 80px;"></div>
     <main class="container main-container py-4 bg-white shadow rounded my-3">
-        <!-- Main content -->
-        <div class="container mt-5">
-            <h2 class="mb-4">Shopping Cart</h2>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Cart Items</h5>
-                        </div>
-                        <div class="card-body">
-                            <% if (cart && cart.length > 0) { %>
-                                <% cart.forEach(item => { %>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
-                                            <img src="<%= item.image %>" class="img-fluid" alt="<%= item.name %>">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h5><%= item.name %></h5>
-                                            <% if (item.size && item.size !== 'No Size') { %>
-                                                <p>Size: <%= item.size %></p>
-                                            <% } %>
-                                            <p>Price: <%= formatPrice(item.price) %> ₫</p>
-                                            <p>Quantity: <%= item.quantity %></p>
-                                        </div>
-                                        <div class="col-md-3 d-flex align-items-center">
-                                            <a href="/cart/remove/<%= item.id %>?size=<%= item.size %>" class="btn btn-danger">Remove</a>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                <% }); %>
-                            <% } else { %>
-                                <p>Your cart is empty.</p>
-                            <% } %>
-                        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Profile Information</h5>
+                        <p class="card-text">Name: <%= user.name %></p>
+                        <p class="card-text">Email: <%= user.email %></p>
+                        <p class="card-text">Phone: <%= user.phone %></p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Order Summary</h5>
-                        </div>
-                        <div class="card-body">
-                            <% if (Array.isArray(cart) && cart.length> 0) { %>
-                                <p>Total Items: <%= cart.reduce((sum, item)=> sum + item.quantity, 0) %></p>
-                                <p>Total Price: $<%= cart.reduce((sum, item)=> sum + item.price * item.quantity,
-                                        0).toFixed(2) %></p>
-                                <a href="/checkout" class="btn btn-primary btn-block">Proceed to Checkout</a>
-                                <% } else { %>
-                                    <p>Your cart is empty.</p>
-                                    <% } %>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- You May Also Like Section -->
-        <div class="container mt-5">
-            <div class="col-12">
-                <h2 class="mb-4">You May Also Like</h2>
-                <div class="row row-cols-2 row-cols-md-4 g-4">
-                    <!-- Related Product 1 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Hoodies1.png" class="card-img-top" alt="Related Product 1">
-                            <div class="card-body">
-                                <h6 class="card-title ">Slim Fit Jeans</h6>
-
-                                <p class="fw-medium">600.000</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Related Product 2 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Hoodies2.png" class="card-img-top" alt="Related Product 2">
-                            <div class="card-body">
-                                <h6 class="card-title">Casual Hooded Sweatshirt</h6>
-
-                                <p class="fw-medium">600.000</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Related Product 3 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Shirt1.png" class="card-img-top" alt="Related Product 3">
-                            <div class="card-body">
-                                <h6 class="card-title">Long Sleeve Polo Shirt</h6>
-
-                                <p class="fw-medium">350.000</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Related Product 4 -->
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="/assets/shirts/Tanktop1.png" class="card-img-top" alt="Related Product 4">
-                            <div class="card-body">
-                                <h6 class="card-title">Lightweight Jacket</h6>
-
-                                <p class="fw-medium">200.000</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-        </div>
+            </div>  
         </div>
     </main>
+
     <!-- FOOTER -->
     <footer class="bg-dark text-light py-5 mt-auto ">
         <div class="container">
