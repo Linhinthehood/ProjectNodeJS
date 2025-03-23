@@ -124,7 +124,7 @@
     </style>
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="d-flex flex-column min-vh-100">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
         <div class="container">
@@ -195,7 +195,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">
+                <li class="breadcrumb-item"><a href="/<%= product.type%>" class="text-decoration-none">
                         <%= product.type%>
                     </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
@@ -435,13 +435,10 @@
                 </div>
             </div>
         </div>
-        </div>
-        </div>
-        </div>
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-dark text-light py-5 mt-auto ">
+    <footer class="bg-dark text-light py-5 mt-auto">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-md-4 mb-4 mb-md-0">

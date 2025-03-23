@@ -12,9 +12,9 @@ router.get("/shirts", productController.getShirts);
 
 router.get("/bottoms", productController.getBottoms);
 
-router.get("/accessoriesRouters",productController.getAccessories)
+router.get("/accessories",productController.getAccessories)
 
-router.get("/outerwearRouters",productController.getOuterwears)
+router.get("/outerwears",productController.getOuterwears)
 
 
 router.get("/search", productController.searchProducts);
