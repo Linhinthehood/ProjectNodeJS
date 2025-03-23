@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Cart</title>
+    <title>Profile - YourBrand</title>
     <!-- Favicon-->
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
@@ -16,58 +16,138 @@
 </head>
 <style>
     body {
-        background-color: #f5f5f5;
+        background-color: #f8f9fa;
     }
 
     .card {
         border: none;
-        box-shadow: none !important;
-        transition: 0.3s;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        transition: transform 0.3s ease;
     }
 
     .card:hover {
         transform: translateY(-5px);
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .card h5 {
-        font-family: 'Anton', sans-serif;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+    .profile-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2rem 0;
+        margin-bottom: 2rem;
     }
 
-    .card:hover .card-img-top {
-        filter: grayscale(0%);
+    .profile-avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid white;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     }
 
-    .badge {
-        background: black;
+    .profile-stats {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
         font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        color: #212529;
     }
 
-    .btn-outline-dark {
-        font-family: 'Anton', sans-serif;
-        border: 2px solid black;
-        text-transform: uppercase;
-        transition: 0.3s;
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.875rem;
     }
 
-    .btn-outline-dark:hover {
-        background: black;
+    .profile-section {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+        color: #212529;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        background: #f8f9fa;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+    }
+
+    .info-content {
+        flex: 1;
+    }
+
+    .info-label {
+        color: #6c757d;
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .info-value {
+        color: #212529;
+        font-weight: 500;
+    }
+
+    .btn-edit {
+        background: #212529;
         color: white;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
     }
 
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
+    .btn-edit:hover {
+        background: #343a40;
+        transform: translateY(-2px);
     }
 
-    .main-container {
-        max-width: 1200px;
-        margin: 30px auto;
+    .navbar {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .navbar.fixed-top {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background-color: rgba(255, 255, 255, 0.95);
+    }
+
+    .form-control:focus {
+        border-color: #f04e30;
+        box-shadow: 0 0 5px rgba(240, 78, 48, 0.5);
+    }
+
+    .btn-dark:hover {
+        background-color: #f04e30;
+        border-color: #f04e30;
+    }
+
+    .text-dark:hover {
+        color: #f04e30 !important;
     }
 </style>
 
@@ -180,18 +260,66 @@
     </style>
 
     <div style="margin-top: 80px;"></div>
-    <main class="container main-container py-4 bg-white shadow rounded my-3">
+
+    <!-- Main Content -->
+    <main class="container py-4">
         <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Profile Information</h5>
-                        <p class="card-text">Name: <%= user.name %></p>
-                        <p class="card-text">Email: <%= user.email %></p>
-                        <p class="card-text">Phone: <%= user.phone %></p>
+
+            <!-- Profile Information -->
+            <div class="col-md-6">
+                <div class="profile-section">
+                        <h3 class="section-title">Personal Information</h3>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Full Name</div>
+                            <div class="info-value"><%= user.name %></div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="bi bi-envelope-fill"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Email Address</div>
+                            <div class="info-value"><%= user.email %></div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="bi bi-telephone-fill"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Phone Number</div>
+                            <div class="info-value"><%= user.phone %></div>
+                        </div>
+                    </div>
+                    <button class="btn btn-edit">
+                        <i class="bi bi-pencil-square me-2"></i>Edit Profile
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="col-md-6">
+                <div class="profile-section">
+                    <h3 class="section-title row">
+                        <div class="col-md-6">Recent Orders</div> 
+                        <div class="col-md-6">
+                            <div class="stat-item">
+                                <div class="stat-value">0</div>
+                                <div class="stat-label">Orders</div>
+                            </div>
+                        </div>
+                    </h3>
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-bag-x display-4"></i>
+                        <p class="mt-3">No orders yet</p>
                     </div>
                 </div>
-            </div>  
+            </div>
         </div>
     </main>
 
