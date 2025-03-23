@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let quantity = parseInt(document.getElementById("quantityInput").value, 10);
 
             // Get selected size
-            const selectedSize = document.querySelector('input[name="sizeOptions"]:checked');
+            const selectedSize = document.querySelector(`input[name="sizeOptions-${id}"]:checked`);
             let size = selectedSize ? selectedSize.value : "No Size";
 
             if (!quantity || quantity < 1) {
