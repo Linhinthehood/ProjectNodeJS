@@ -5,6 +5,32 @@
 - Lê Gia Bảo: 522k0003
 - Trần Đinh Nhất Đăng: 522k0013
 
+## Setup Instructions:
+
+### (Recommended) Docker Setup:
+1. Build and run with Docker Compose:
+   ```bash
+   docker-compose up --build
+   ```
+2. Access the application at `http://localhost:8080`
+
+### Local Development:
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file with the following variables:
+   ```
+   MONGO_URI=your_mongodb_connection_string
+   SESSION_SECRET=your_session_secret
+   PORT=8080
+   ```
+4. Start the development server:
+   ```bash
+   npm start
+   ```
+
 ## Main Features:
 1. Authentication
    - Login / Sign up
@@ -34,51 +60,6 @@
 - Database: MongoDB Atlas
 - Template Engine: EJS
 - File Storage: GridFS (MongoDB)
-
-## Dependencies:
-```json
-{
-  "dependencies": {
-    "body-parser": "^1.20.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "email-validator": "^2.0.4",
-    "express": "^4.21.2",
-    "express-session": "^1.18.1",
-    "ejs": "^3.1.10",
-    "mongoose": "^8.12.1",
-    "multer": "^1.4.4",
-    "multer-gridfs-storage": "^1.3.0",
-    "gridfs-stream": "^1.1.1"
-  }
-}
-```
-
-## Setup Instructions:
-
-### Local Development:
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Create a `.env` file with the following variables:
-   ```
-   MONGO_URI=your_mongodb_connection_string
-   SESSION_SECRET=your_session_secret
-   PORT=8080
-   ```
-4. Start the development server:
-   ```bash
-   npm start
-   ```
-
-### Docker Setup:
-1. Build and run with Docker Compose:
-   ```bash
-   docker-compose up --build
-   ```
-2. Access the application at `http://localhost:8080`
 
 ## Project Structure:
 ```
@@ -114,16 +95,21 @@
 - Session-based authentication is implemented
 - CORS is enabled for API access
 
-## Security Considerations:
-- Environment variables for sensitive data
-- Session management with secure settings
-- Input validation implemented
-- Secure password handling
-
-## Contributing:
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
+## Dependencies:
+```json
+{
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "email-validator": "^2.0.4",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "ejs": "^3.1.10",
+    "mongoose": "^8.12.1",
+    "multer": "^1.4.4",
+    "multer-gridfs-storage": "^1.3.0",
+    "gridfs-stream": "^1.1.1"
+  }
+}
+```
