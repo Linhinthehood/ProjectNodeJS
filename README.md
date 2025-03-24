@@ -13,8 +13,6 @@
    docker-compose up --build
    ```
 2. Access the application at `http://localhost:8080`
-
-### Local Development:
 1. Clone the repository
 2. Install dependencies:
    ```bash
