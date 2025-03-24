@@ -1,0 +1,24 @@
+# Specify Docker Compose file format version
+version: '3.8'
+
+# Define the services that make up your application
+services:
+  # Name of the service (can be anything, 'app' is a common convention)
+  app:
+    # Build the container using the Dockerfile in the current directory
+    build: .
+    
+    # Map container port 8080 to host port 8080
+    # Format is "HOST_PORT:CONTAINER_PORT"
+    ports:
+      - "8080:8080"
+    
+    # Set environment variables for the container
+    # These override any .env file values
+    environment:
+      - MONGO_URI=mongodb+srv://jabick10:Baole2004@projectnodejs.7x9uw.mongodb.net/products
+      - SESSION_SECRET=secret
+    
+    # Container restart policy
+    # 'unless-stopped' means container will always restart unless explicitly stopped
+    restart: unless-stopped 
