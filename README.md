@@ -8,26 +8,15 @@
 ## Setup Instructions:
 
 ### (Recommended) Docker Setup:
-1. Build and run with Docker Compose:
+1. Clone the repository
+  ```bash
+   git clone https://github.com/Linhinthehood/ProjectNodeJS.git
+  ```
+2. Build and run with Docker Compose:
    ```bash
    docker-compose up --build
    ```
-2. Access the application at `http://localhost:8080`
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Create a `.env` file with the following variables:
-   ```
-   MONGO_URI=your_mongodb_connection_string
-   SESSION_SECRET=your_session_secret
-   PORT=8080
-   ```
-4. Start the development server:
-   ```bash
-   npm start
-   ```
+3. Access the application at `http://localhost:8080`
 
 ## Main Features:
 1. Authentication
@@ -59,6 +48,19 @@
 - Template Engine: EJS
 - File Storage: GridFS (MongoDB)
 
+## Docker Configuration:
+- Base image: Node.js 20 (slim)
+- Port: 8080
+- Environment variables managed through docker-compose
+- Automatic container restart enabled
+
+## Development Notes:
+- The application uses nodemon for development
+- MongoDB Atlas is used for database storage
+- GridFS is implemented for file storage
+- Session-based authentication is implemented
+- CORS is enabled for API access
+
 ## Project Structure:
 ```
 ├── config/
@@ -79,19 +81,6 @@
 ├── Dockerfile        # Docker configuration
 └── docker-compose.yml # Docker Compose configuration
 ```
-
-## Docker Configuration:
-- Base image: Node.js 20 (slim)
-- Port: 8080
-- Environment variables managed through docker-compose
-- Automatic container restart enabled
-
-## Development Notes:
-- The application uses nodemon for development
-- MongoDB Atlas is used for database storage
-- GridFS is implemented for file storage
-- Session-based authentication is implemented
-- CORS is enabled for API access
 
 ## Dependencies:
 ```json
