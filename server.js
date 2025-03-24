@@ -4,15 +4,49 @@ const cors = require('cors');
 const connectDB = require('./config/db');  // Import connectDB
 const path = require('path');
 const session = require('express-session');
+const RedisStore = require('connect-redis').default;
+const Redis = require('ioredis');
 
 const app = express();
 
-// Cấu hình session middleware (MemoryStore)
+// Initialize Redis client with retry strategy
+const redisClient = new Redis({
+    host: process.env.REDIS_HOST || 'redis',
+    port: process.env.REDIS_PORT || 6379,
+    retryStrategy: function(times) {
+        const delay = Math.min(times * 50, 2000);
+        return delay;
+    },
+    maxRetriesPerRequest: 3,
+    enableReadyCheck: true
+});
+
+// Handle Redis connection events
+redisClient.on('connect', () => {
+    console.log('Connected to Redis');
+});
+
+redisClient.on('error', (err) => {
+    console.error('Redis connection error:', err);
+});
+
+redisClient.on('ready', () => {
+    console.log('Redis client is ready');
+});
+
+// Configure session middleware with Redis store
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 } // Session sống 1 ngày
+    store: new RedisStore({ 
+        client: redisClient,
+        prefix: 'session:'
+    }),
+    secret: process.env.SESSION_SECRET || 'secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { 
+        maxAge: 1000 * 60 * 60 * 24, // Session lives for 1 day
+        secure: process.env.NODE_ENV === 'production' // Use secure cookies in production
+    }
 }));
 
 // Load biến môi trường
@@ -60,5 +94,5 @@ app.use('/', profile_page);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log(`Server is running on port http://localhost:${PORT}`);
+    console.log(`Server instance ${process.env.INSTANCE_ID || 1} is running on port ${PORT}`);
 });
