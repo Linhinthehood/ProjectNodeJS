@@ -1,9 +1,33 @@
 const User = require('../models/userModel');
 
+// exports.getProfile = async (req, res) => {
+//     if (!req.session.user) {
+//         return res.redirect('/auth');
+//     }
+//     const user = await User.findById(req.session.user.id);
+//     res.render('profile', { user });
+// };
+
+const Receipt = require('../models/receiptModel');
+
 exports.getProfile = async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/auth');
+  try {
+    // Giả sử bạn đã lưu thông tin user sau đăng nhập ở req.session.user
+    const user = req.session.user;
+    if (!user) {
+      // Nếu chưa đăng nhập, chuyển hướng
+      return res.redirect('/auth');
     }
-    const user = await User.findById(req.session.user.id);
-    res.render('profile', { user });
+
+    // Truy vấn danh sách đơn hàng (receipt) theo email
+    const receipts = await Receipt.find({ email: user.email }).sort({ createdAt: -1 });
+
+    // Render trang profile kèm thông tin user và receipts
+    res.render('profile', { user, receipts });
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    return res.status(500).send('Server error');
+  }
 };
+
+

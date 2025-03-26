@@ -5,8 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login & Sign Up</title>
-      <!-- Font Awesome for icons -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <!-- Bootstrap icons-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -48,101 +48,111 @@
   <!-- HEADER / NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
     <div class="container">
-        <a class="navbar-brand fw-bold text-uppercase" href="/">YourBrand</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#!">All Products</a></li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                        <li><a class="dropdown-item" href="#!">Shirts</a></li>
-                        <li><a class="dropdown-item" href="#!">Bottoms</a></li>
-                        <li><a class="dropdown-item" href="#!">Outerwears</a></li>
-                        <li><a class="dropdown-item" href="#!">Accessories</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+      <a class="navbar-brand fw-bold text-uppercase" href="/">YourBrand</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">Shop</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#!">All Products</a></li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+              <li><a class="dropdown-item" href="#!">Shirts</a></li>
+              <li><a class="dropdown-item" href="#!">Bottoms</a></li>
+              <li><a class="dropdown-item" href="#!">Outerwears</a></li>
+              <li><a class="dropdown-item" href="#!">Accessories</a></li>
             </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+        </ul>
 
-            <!-- Phần search -->
-            <form class="d-flex me-3">
-                <input class="form-control form-control-sm border-dark" type="search" placeholder="Search"
-                    aria-label="Search">
-                <button class="btn btn-dark btn-sm ms-2" type="submit"><i class="bi bi-search"></i></button>
-            </form>
+        <!-- Phần search -->
+        <form class="d-flex me-3">
+          <input class="form-control form-control-sm border-dark" type="search" placeholder="Search"
+            aria-label="Search">
+          <button class="btn btn-dark btn-sm ms-2" type="submit"><i class="bi bi-search"></i></button>
+        </form>
 
-            <div class="d-flex align-items-center gap-3">
-                <button id="cartButton" class="btn btn-dark btn-sm ms-2">
-                    <i class="bi bi-cart-fill me-1"></i>
-                    <span id="cartCount" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                </button>
-            </div>
+        <div class="d-flex align-items-center gap-3">
+          <button id="cartButton" class="btn btn-dark btn-sm ms-2">
+            <i class="bi bi-cart-fill me-1"></i>
+            <span id="cartCount" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+          </button>
         </div>
+      </div>
     </div>
-</nav>
+  </nav>
+
+
 
   <div style="margin: 80px 0px 30px 0px;">
-  <!-- MAIN CONTENT -->
-  <main class="container flex-grow-1" >
-    <div class="row w-100">
-      <!-- Đăng nhập (Login) - Bên trái -->
-      <div class="col-12 col-md-6 mb-5 mb-md-0">
-        <h3 class="mb-4 text-center">Login</h3>
-        <hr>
-        <form action="/login" method="POST" class="auth-form">
-          <div class="mb-3">
-            <label for="loginEmail" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="loginEmail" name="email" required />
-          </div>
-          <div class="mb-3">
-            <label for="loginPassword" class="form-label">Password</label>
-            <input type="password" class="form-control" id="loginPassword" name="password" required />
-          </div>
-          <div class="mb-3">
-            <a href="#!">Forgot password?</a>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
+    <!-- Đoạn hiển thị alert lỗi nếu có -->
+    <% if (error) { %>
+      <div class="alert alert-danger alert-dismissible fade show mx-3" role="alert">
+        <%= error %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
+      <% } %>
+        <!-- MAIN CONTENT -->
+        <main class="container flex-grow-1">
+
+          <div class="row w-100">
+            <!-- Đăng nhập (Login) - Bên trái -->
+            <div class="col-12 col-md-6 mb-5 mb-md-0">
+              <h3 class="mb-4 text-center">Login</h3>
+              <hr>
+              <form action="/login" method="POST" class="auth-form">
+                <div class="mb-3">
+                  <label for="loginEmail" class="form-label">Email address</label>
+                  <input type="email" class="form-control" id="loginEmail" name="email" required />
+                </div>
+                <div class="mb-3">
+                  <label for="loginPassword" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="loginPassword" name="password" required />
+                </div>
+                <div class="mb-3">
+                  <a href="#!">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+              </form>
+            </div>
 
 
 
-      <!-- Đăng ký (Sign Up) - Bên phải -->
-      <div class="col-12 col-md-6">
-        <h3 class="mb-4 text-center">Sign Up</h3>
-        <hr>
-        <form action="/register" method="POST" class="auth-form">
-          <div class="mb-3">
-            <label for="registerName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="registerName" name="name" required />
+            <!-- Đăng ký (Sign Up) - Bên phải -->
+            <div class="col-12 col-md-6">
+              <h3 class="mb-4 text-center">Sign Up</h3>
+              <hr>
+              <form action="/register" method="POST" class="auth-form">
+                <div class="mb-3">
+                  <label for="registerName" class="form-label">Name</label>
+                  <input type="text" class="form-control" id="registerName" name="name" required />
+                </div>
+                <div class="mb-3">
+                  <label for="registerEmail" class="form-label">Email address</label>
+                  <input type="email" class="form-control" id="registerEmail" name="email" required />
+                </div>
+                <div class="mb-3">
+                  <label for="registerPassword" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="registerPassword" name="password" required />
+                </div>
+                <div class="mb-3">
+                  <label for="registerPhone" class="form-label">Phone number</label>
+                  <input type="text" class="form-control" id="registerPhone" name="phone" />
+                </div>
+                <button type="submit" class="btn btn-success w-100">Sign Up</button>
+              </form>
+            </div>
           </div>
-          <div class="mb-3">
-            <label for="registerEmail" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="registerEmail" name="email" required />
-          </div>
-          <div class="mb-3">
-            <label for="registerPassword" class="form-label">Password</label>
-            <input type="password" class="form-control" id="registerPassword" name="password" required />
-          </div>
-          <div class="mb-3">
-            <label for="registerPhone" class="form-label">Phone number</label>
-            <input type="text" class="form-control" id="registerPhone" name="phone" />
-          </div>
-          <button type="submit" class="btn btn-success w-100">Sign Up</button>
-        </form>
-      </div>
-    </div>
-  </main>
-</div>
+        </main>
+  </div>
   <footer class="bg-dark text-light py-5 mt-auto">
     <div class="container">
       <div class="row">
@@ -207,21 +217,21 @@
   <!-- Modal giỏ hàng -->
   <div id="cartModal" class="modal fade" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Giỏ hàng</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <ul id="cartItems" class="list-group"></ul>
-            </div>
-            <div class="modal-footer">
-                <button id="clearCart" class="btn btn-danger me-auto">Xóa tất cả</button>
-                <a href="/cart" class="btn btn-primary">Go to Cart</a>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Giỏ hàng</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
+        <div class="modal-body">
+          <ul id="cartItems" class="list-group"></ul>
+        </div>
+        <div class="modal-footer">
+          <button id="clearCart" class="btn btn-danger me-auto">Xóa tất cả</button>
+          <a href="/cart" class="btn btn-primary">Go to Cart</a>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

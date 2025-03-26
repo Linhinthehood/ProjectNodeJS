@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            if (type !== "Accessories" && size === "No Size"){
+            if (type !== "Accessories" && size === "No Size") {
                 alert("Please select size !")
                 return;
             }
@@ -317,11 +317,78 @@ document.addEventListener("DOMContentLoaded", () => {
         const summaryHTML = `
             <p>Total Items: ${totalItems}</p>
             <p>Total Price: ${formatPrice(totalPrice)}</p>
-            <a href="/place-order" class="btn btn-success w-100 mt-3" id="placeOrderBtn">Place Order</a>
+            <button class="btn btn-success w-100 mt-3" id="placeOrderBtn">Place Order</button>
         `;
         cartItemsContainer.insertAdjacentHTML("beforeend", summaryHTML);
     } else {
         cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const placeOrderBtn = document.getElementById("placeOrderBtn");
+    if (placeOrderBtn) {
+        placeOrderBtn.addEventListener("click", function () {
+            const confirmOrder = confirm("Bạn có chắc chắn thông tin bạn nhập chính xác chưa?");
+            if (!confirmOrder) return;
+
+            // Lấy thông tin từ form
+            const email = document.getElementById("email").value.trim();
+            const fullName = document.getElementById("fullName").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const address = document.getElementById("address").value.trim();
+            const district = document.getElementById("district").value.trim();
+            const city = document.getElementById("city").value.trim();
+
+            // Lấy shippingMethod (select)
+            const shippingSelect = document.querySelector(".form-select");
+            const shippingMethod = shippingSelect ? shippingSelect.value : "";
+
+            // Lấy paymentMethod (radio)
+            const paymentRadio = document.querySelector('input[name="paymentMethod"]:checked');
+            const paymentMethod = paymentRadio ? paymentRadio.id : "";
+
+            // Lấy cart từ localStorage (hoặc session):
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            // Tính tổng tiền
+            let totalPrice = 0;
+            cart.forEach(item => {
+                totalPrice += item.price * item.quantity;
+            });
+
+            // Gửi request POST đến /place-order
+            fetch('/place-order', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email,
+                    fullName,
+                    phone,
+                    address,
+                    district,
+                    city,
+                    shippingMethod,
+                    paymentMethod,
+                    cartItems: cart,
+                    totalPrice
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Đặt hàng thành công!');
+                        // Xóa cart localStorage hoặc chuyển hướng
+                        localStorage.removeItem('cart');
+                        window.location.href = '/';
+                    } else {
+                        alert('Đặt hàng thất bại: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Có lỗi xảy ra khi đặt hàng.');
+                });
+        });
     }
 });
 

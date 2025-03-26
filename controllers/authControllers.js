@@ -9,7 +9,7 @@ const User = require('../models/userModel');
  */
 exports.getAuthPage = (req, res) => {
   // Tên file view: auth.ejs
-  res.render('auth');
+  res.render('auth', { error: null });
 };
 
 /**
@@ -24,7 +24,7 @@ exports.postRegister = async (req, res) => {
     // Kiểm tra email đã tồn tại?
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).send('Email already registered.');
+      return res.render('auth', { error: 'Email already registered.' });
     }
 
     // Tạo user mới
@@ -44,7 +44,7 @@ exports.postRegister = async (req, res) => {
     return res.redirect("/");
   } catch (err) {
     console.error(err);
-    return res.status(500).send('Server error');
+    return res.render('auth', { error: 'Server error. Please try again later.' });
   }
 };
 
@@ -60,12 +60,12 @@ exports.postLogin = async (req, res) => {
     // Tìm user theo email
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).send('User not found.');
+      return res.render('auth', { error: 'User not found.' });
     }
 
     // So sánh password (demo, chưa có hashing)
     if (user.password !== password) {
-      return res.status(400).send('Invalid password.');
+      return res.render('auth', { error: 'Invalid password.' });
     }
 
     // Nếu đúng => đăng nhập thành công
@@ -82,6 +82,6 @@ exports.postLogin = async (req, res) => {
     return res.redirect("/");
   } catch (err) {
     console.error(err);
-    return res.status(500).send('Server error');
+    return res.render('auth', { error: 'Server error. Please try again later.' });
   }
 };
