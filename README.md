@@ -82,21 +82,39 @@
 └── docker-compose.yml # Docker Compose configuration
 ```
 
+## Run guide:
+###For Local Development:
+```bash
+npm run dev
+```
+
+###For Docker:
+```bash
+npm run docker:up    # Start containers
+npm run docker:down  # Stop containers
+npm run docker:logs  # View logs
+```
+
 ## Dependencies:
 ```json
 {
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
+    "connect-redis": "^7.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
     "email-validator": "^2.0.4",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "ejs": "^3.1.10",
+    "gitignore": "^0.7.0",
+    "gridfs-stream": "^1.1.1",
+    "ioredis": "^5.3.2",
     "mongoose": "^8.12.1",
     "multer": "^1.4.4",
     "multer-gridfs-storage": "^1.3.0",
-    "gridfs-stream": "^1.1.1"
+    "redis": "^4.7.0"
   }
 }
 ```
