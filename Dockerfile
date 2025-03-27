@@ -18,6 +18,9 @@ RUN npm install && npm install -g nodemon
 # This is done after installing dependencies to avoid unnecessary rebuilds
 COPY . .
 
+# Set environment variables
+ENV PORT=8080
+
 # Document which port the container will listen on
 # This is just documentation, actual port mapping is done in docker-compose
 EXPOSE 8080
