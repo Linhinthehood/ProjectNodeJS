@@ -9,7 +9,11 @@ const User = require('../models/userModel');
  */
 exports.getAuthPage = (req, res) => {
   // Tên file view: auth.ejs
-  res.render('auth', { error: null });
+  res.render('auth', { 
+    loginError: null,
+    signupError: null,
+    formData: {} // To preserve form data on error
+  });
 };
 
 /**
@@ -24,7 +28,33 @@ exports.postRegister = async (req, res) => {
     // Kiểm tra email đã tồn tại?
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.render('auth', { error: 'Email already registered.' });
+      return res.render('auth', { 
+        loginError: null,
+        signupError: 'Email already registered.',
+        formData: req.body // Preserve the form data
+      });
+    }
+
+    // Validate password
+    if (password.length < 6) {
+      return res.render('auth', {
+        loginError: null,
+        signupError: 'Password must be at least 6 characters long.',
+        formData: req.body
+      });
+    }
+
+    // Validate phone (if provided)
+    if (phone) {
+      const cleanPhone = phone.replace(/[- ]/g, '');
+      const phoneRegex = /^\d{10,15}$/;
+      if (!phoneRegex.test(cleanPhone)) {
+        return res.render('auth', {
+          loginError: null,
+          signupError: 'Phone number must be between 10 and 15 digits.',
+          formData: req.body
+        });
+      }
     }
 
     // Tạo user mới
@@ -45,7 +75,11 @@ exports.postRegister = async (req, res) => {
     return res.redirect("/");
   } catch (err) {
     console.error(err);
-    return res.render('auth', { error: 'Server error. Please try again later.' });
+    return res.render('auth', { 
+      loginError: null,
+      signupError: 'Server error. Please try again later.',
+      formData: req.body
+    });
   }
 };
 
@@ -61,12 +95,20 @@ exports.postLogin = async (req, res) => {
     // Tìm user theo email
     const user = await User.findOne({ email });
     if (!user) {
-      return res.render('auth', { error: 'User not found.' });
+      return res.render('auth', { 
+        loginError: 'User not found.',
+        signupError: null,
+        formData: req.body
+      });
     }
 
     // So sánh password (demo, chưa có hashing)
     if (user.password !== password) {
-      return res.render('auth', { error: 'Invalid password.' });
+      return res.render('auth', { 
+        loginError: 'Invalid password.',
+        signupError: null,
+        formData: req.body
+      });
     }
 
     // Nếu đúng => đăng nhập thành công
@@ -83,6 +125,10 @@ exports.postLogin = async (req, res) => {
     return res.redirect("/");
   } catch (err) {
     console.error(err);
-    return res.render('auth', { error: 'Server error. Please try again later.' });
+    return res.render('auth', { 
+      loginError: 'Server error. Please try again later.',
+      signupError: null,
+      formData: req.body
+    });
   }
 };

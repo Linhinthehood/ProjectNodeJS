@@ -1,40 +1,35 @@
 const Receipt = require('../models/receiptModel');
 const User = require('../models/userModel');
 
-exports.getProfile = async (req, res) => {
+exports.getProfile = async (req, res, next) => {
   try {
-    // Giả sử bạn đã lưu thông tin user sau đăng nhập ở req.session.user
     const user = req.session.user;
-    if (!user) {
-      // Nếu chưa đăng nhập, chuyển hướng
-      return res.redirect('/auth');
-    }
-
     // Truy vấn danh sách đơn hàng (receipt) theo email
     const receipts = await Receipt.find({ email: user.email }).sort({ createdAt: -1 });
-
     // Render trang profile kèm thông tin user và receipts
     res.render('profile', { user, receipts });
   } catch (error) {
-    console.error('Error fetching profile:', error);
-    return res.status(500).send('Server error');
+    next(error);
   }
 };
 
-exports.updateProfile = async (req, res) => {
+exports.updateProfile = async (req, res, next) => {
   try {
     const { name, email, phone, currentPassword, newPassword } = req.body;
     const userId = req.session.user.id;
 
-    // Find the user
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      const error = new Error('User not found');
+      error.statusCode = 404;
+      throw error;
     }
 
-    // Verify current password
+    // Password verification is still here as it's part of business logic
     if (user.password !== currentPassword) {
-      return res.status(400).json({ error: 'Current password is incorrect' });
+      const error = new Error('Current password is incorrect');
+      error.statusCode = 400;
+      throw error;
     }
 
     // Update user information
@@ -47,7 +42,6 @@ exports.updateProfile = async (req, res) => {
       user.password = newPassword;
     }
 
-    // Save the updated user
     await user.save();
 
     // Update session
@@ -58,11 +52,9 @@ exports.updateProfile = async (req, res) => {
       phone: user.phone
     };
 
-    // Redirect back to profile page
     res.redirect('/profile');
   } catch (error) {
-    console.error('Error updating profile:', error);
-    return res.status(500).json({ error: 'Server error' });
+    next(error);
   }
 };
 

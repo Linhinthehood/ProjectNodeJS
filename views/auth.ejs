@@ -96,7 +96,6 @@
     <!-- Đoạn hiển thị alert lỗi nếu có -->
         <!-- MAIN CONTENT -->
         <main class="container flex-grow-1">
-
           <div class="row w-100">
             <!-- Đăng nhập (Login) - Bên trái -->
             <div class="col-12 col-md-6 mb-5 mb-md-0">
@@ -105,18 +104,18 @@
               <form action="/login" method="POST" class="auth-form">
                 <div class="mb-3">
                   <label for="loginEmail" class="form-label">Email address</label>
-                  <input type="email" class="form-control" id="loginEmail" name="email" required />
+                  <input type="email" class="form-control" id="loginEmail" name="email" value="<%= formData.email || '' %>" required />
                 </div>
                 <div class="mb-3">
                   <label for="loginPassword" class="form-label">Password</label>
                   <input type="password" class="form-control" id="loginPassword" name="password" required />
                 </div>
-                <% if (error) { %>
+                <% if (loginError) { %>
                   <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
-                    <%= error %>
-                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <%= loginError %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
-                  <% } %>
+                <% } %>
                 <div class="mb-3">
                   <a href="#!">Forgot password?</a>
                 </div>
@@ -133,11 +132,11 @@
               <form action="/register" method="POST" class="auth-form">
                 <div class="mb-3">
                   <label for="registerName" class="form-label">Name</label>
-                  <input type="text" class="form-control" id="registerName" name="name" required />
+                  <input type="text" class="form-control" id="registerName" name="name" value="<%= formData.name || '' %>" required />
                 </div>
                 <div class="mb-3">
                   <label for="registerEmail" class="form-label">Email address</label>
-                  <input type="email" class="form-control" id="registerEmail" name="email" required />
+                  <input type="email" class="form-control" id="registerEmail" name="email" value="<%= formData.email || '' %>" required />
                 </div>
                 <div class="mb-3">
                   <label for="registerPassword" class="form-label">Password</label>
@@ -145,8 +144,14 @@
                 </div>
                 <div class="mb-3">
                   <label for="registerPhone" class="form-label">Phone number</label>
-                  <input type="text" class="form-control" id="registerPhone" name="phone" />
+                  <input type="text" class="form-control" id="registerPhone" name="phone" value="<%= formData.phone || '' %>" />
                 </div>
+                <% if (signupError) { %>
+                  <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                    <%= signupError %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                <% } %>
                 <button type="submit" class="btn btn-success w-100">Sign Up</button>
               </form>
             </div>
@@ -169,7 +174,7 @@
         <div class="col-6 col-md-2 mb-3 mb-md-0">
           <h6 class="fw-bold mb-3">SHOP</h6>
           <ul class="list-unstyled">
-            <li class="mb-2"><a href="#" class="text-light text-decoration-none">Tops</a></li>
+            <li class="mb-2"><a href="/shirts" class="text-light text-decoration-none">Tops</a></li>
             <li class="mb-2"><a href="#" class="text-light text-decoration-none">Bottoms</a></li>
             <li class="mb-2"><a href="#" class="text-light text-decoration-none">Outerwears</a></li>
             <li class="mb-2"><a href="#" class="text-light text-decoration-none">Accessories</a></li>
