@@ -1,45 +1,20 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const connectDB = require('./config/db');  // Import connectDB
 const path = require('path');
 const session = require('express-session');
-const RedisStore = require('connect-redis').default;
-const Redis = require('ioredis');
+
+// Load env variables first
+dotenv.config();
+
+// Import connectDB after loading environment variables
+const connectDB = require('./config/db');  
 
 const app = express();
 
-// Initialize Redis client with retry strategy
-const redisClient = new Redis({
-    host: process.env.REDIS_HOST || 'redis',
-    port: process.env.REDIS_PORT || 6379,
-    retryStrategy: function(times) {
-        const delay = Math.min(times * 50, 2000);
-        return delay;
-    },
-    maxRetriesPerRequest: 3,
-    enableReadyCheck: true
-});
-
-// Handle Redis connection events
-redisClient.on('connect', () => {
-    console.log('Connected to Redis');
-});
-
-redisClient.on('error', (err) => {
-    console.error('Redis connection error:', err);
-});
-
-redisClient.on('ready', () => {
-    console.log('Redis client is ready');
-});
-
-// Configure session middleware with Redis store
-app.use(session({
-    store: new RedisStore({ 
-        client: redisClient,
-        prefix: 'session:'
-    }),
+// Conditionally set up Redis
+let redisClient;
+let sessionConfig = {
     secret: process.env.SESSION_SECRET || 'secret',
     resave: false,
     saveUninitialized: false,
@@ -47,10 +22,50 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24, // Session lives for 1 day
         secure: process.env.NODE_ENV === 'production' // Use secure cookies in production
     }
-}));
+};
 
-// Load biến môi trường
-dotenv.config();
+// Only use Redis if REDIS_HOST is set (e.g., in Docker)
+if (process.env.REDIS_HOST) {
+    console.log('Setting up Redis store for sessions');
+    const RedisStore = require('connect-redis').default;
+    const Redis = require('ioredis');
+    
+    // Initialize Redis client with retry strategy
+    redisClient = new Redis({
+        host: process.env.REDIS_HOST || 'localhost',
+        port: process.env.REDIS_PORT || 6379,
+        retryStrategy: function(times) {
+            const delay = Math.min(times * 50, 2000);
+            return delay;
+        },
+        maxRetriesPerRequest: 3,
+        enableReadyCheck: true
+    });
+
+    // Handle Redis connection events
+    redisClient.on('connect', () => {
+        console.log('Connected to Redis');
+    });
+
+    redisClient.on('error', (err) => {
+        console.error('Redis connection error:', err);
+    });
+
+    redisClient.on('ready', () => {
+        console.log('Redis client is ready');
+    });
+    
+    // Add Redis store to session config
+    sessionConfig.store = new RedisStore({ 
+        client: redisClient,
+        prefix: 'session:'
+    });
+} else {
+    console.log('Using memory store for sessions (development mode)');
+}
+
+// Configure session middleware
+app.use(session(sessionConfig));
 
 // Kết nối tới MongoDB
 connectDB();
@@ -97,5 +112,5 @@ app.use('/', orderRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server instance ${process.env.INSTANCE_ID || 1} is running on port ${PORT}`);
+    console.log(`Server instance ${process.env.INSTANCE_ID || 'dev'} is running on port ${PORT}`);
 });
