@@ -110,7 +110,13 @@ app.use('/', profileRoutes);
 const orderRoutes = require('./routes/orderRoutes');
 app.use('/', orderRoutes);
 
-const PORT = process.env.PORT || 3000;
+// Debug environment variables
+console.log('Environment variables:');
+console.log('PORT:', process.env.PORT);
+console.log('NODE_ENV:', process.env.NODE_ENV);
+
+const PORT = process.env.PORT || 8080;
+console.log('Using port:', PORT);
 app.listen(PORT, () => {
     console.log(`Server instance ${process.env.INSTANCE_ID || 'dev'} is running on port ${PORT}`);
 });
