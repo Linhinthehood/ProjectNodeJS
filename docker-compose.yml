@@ -33,6 +33,7 @@ services:
       - INSTANCE_ID=1
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - IS_DOCKER=true
     depends_on:
       - redis
     restart: unless-stopped
@@ -46,6 +47,7 @@ services:
       - INSTANCE_ID=2
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - IS_DOCKER=true
     depends_on:
       - redis
     restart: unless-stopped
@@ -59,6 +61,7 @@ services:
       - INSTANCE_ID=3
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - IS_DOCKER=true
     depends_on:
       - redis
     restart: unless-stopped

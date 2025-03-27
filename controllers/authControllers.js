@@ -36,7 +36,8 @@ exports.postRegister = async (req, res) => {
     req.session.user = {
       id: newUser._id,
       name: newUser.name,
-      email: newUser.email
+      email: newUser.email,
+      phone: newUser.phone
     };
     console.log("User logged in:", req.session.user);
 
@@ -73,8 +74,8 @@ exports.postLogin = async (req, res) => {
     req.session.user = {
       id: user._id,
       name: user.name,
-      email: user.email
-      // Thêm các thông tin khác nếu cần
+      email: user.email,
+      phone: user.phone
     };
     console.log("User logged in:", req.session.user);
 

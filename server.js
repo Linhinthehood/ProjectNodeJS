@@ -24,8 +24,9 @@ let sessionConfig = {
     }
 };
 
-// Only use Redis if REDIS_HOST is set (e.g., in Docker)
-if (process.env.REDIS_HOST) {
+// Only use Redis if REDIS_HOST is set AND not in local development mode
+const isDocker = process.env.IS_DOCKER === 'true';
+if (process.env.REDIS_HOST && isDocker) {
     console.log('Setting up Redis store for sessions');
     const RedisStore = require('connect-redis').default;
     const Redis = require('ioredis');
@@ -118,5 +119,5 @@ console.log('NODE_ENV:', process.env.NODE_ENV);
 const PORT = process.env.PORT || 8080;
 console.log('Using port:', PORT);
 app.listen(PORT, () => {
-    console.log(`Server instance ${process.env.INSTANCE_ID || 'dev'} is running on port ${PORT}`);
+    console.log(`Server instance ${process.env.INSTANCE_ID || 'dev'} is running on port http://localhost:${PORT}`);
 });

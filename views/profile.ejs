@@ -336,7 +336,7 @@
                             <div>
                               <p class="mb-1"><strong>Ngày đặt:</strong> <%= receipt.createdAt.toLocaleString() %></p>
                               <p class="mb-1"><strong>Địa chỉ:</strong> <%= receipt.address %></p>
-                              <p class="mb-1"><strong>Tổng tiền:</strong> <%= receipt.totalPrice %> ₫</p>
+                              <p class="mb-1"><strong>Tổng tiền:</strong> <%= (receipt.totalPrice).toLocaleString('vi-VN') %> ₫</p>
                             </div>
                             <!-- Nút mở rộng -->
                             <button class="btn btn-link text-decoration-none toggle-details" 
@@ -366,7 +366,7 @@
                                     <% } %>
                                     <p class="mb-0">Quantity: <%= item.quantity %></p>
                                   </div>
-                                  <span><%= item.price * item.quantity %> ₫</span>
+                                  <span><%= (item.price * item.quantity).toLocaleString('vi-VN') %> ₫</span>
                                 </li>
                               <% }) %>
                             </ul>
