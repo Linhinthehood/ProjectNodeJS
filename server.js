@@ -95,7 +95,7 @@ app.use('/', profileRoutes);
 const orderRoutes = require('./routes/orderRoutes');
 app.use('/', orderRoutes);
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server instance ${process.env.INSTANCE_ID || 1} is running on port ${PORT}`);
 });
