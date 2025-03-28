@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
+const compression = require('compression');
+const rateLimit = require('express-rate-limit');
 
 // Load env variables first
 dotenv.config();
@@ -82,6 +84,44 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+// Ensure static file serving is properly configured
+app.use(express.static('public'));
+app.use('/static', express.static('public'));
+
+// Add compression middleware
+app.use(compression());
+
+// Add caching headers for static assets
+app.use(express.static('public', {
+    maxAge: '1d',
+    etag: true
+}));
+
+// Add rate limit middleware
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
+
+// Add test endpoint
+app.get('/test', (req, res) => {
+    res.send('Test endpoint working!');
+});
+
+// Add middleware to log instance information
+app.use((req, res, next) => {
+    console.log(`Request handled by instance ${process.env.INSTANCE_ID || 'dev'}`);
+    next();
+});
+
+// Add instance check endpoint
+app.get('/instance-check', (req, res) => {
+    res.json({
+        instanceId: process.env.INSTANCE_ID || 'dev',
+        timestamp: new Date().toISOString()
+    });
+});
 
 // Routes
 const authRoutes = require('./routes/authRoutes');

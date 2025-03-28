@@ -95,18 +95,26 @@ npm run docker:down  # Stop containers
 npm run docker:logs  # View logs
 ```
 
+## Testing load balancing:
+1. Run docker compose first
+2. Access to http://localhost:8080/load-balancer-demo.html
+3. Click start demo for create 30 requests
+4. Click clear to reset all requests
+
 ## Dependencies:
 ```json
 {
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
+    "compression": "^1.8.0",
     "connect-redis": "^7.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "email-validator": "^2.0.4",
     "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
     "gitignore": "^0.7.0",
     "gridfs-stream": "^1.1.1",
@@ -114,6 +122,7 @@ npm run docker:logs  # View logs
     "mongoose": "^8.12.1",
     "multer": "^1.4.4",
     "multer-gridfs-storage": "^1.3.0",
+    "nodemon": "^3.1.9",
     "redis": "^4.7.0"
   }
 }
