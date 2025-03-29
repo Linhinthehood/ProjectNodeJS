@@ -1,6 +1,9 @@
 // controllers/authController.js
 
 const User = require('../models/userModel');
+const messageService = require('../services/messageService');
+const { QUEUES } = require('../config/rabbitmq');
+const bcrypt = require('bcrypt');
 // const Product = require('../models/productModel');
 
 /**
@@ -57,10 +60,21 @@ exports.postRegister = async (req, res) => {
       }
     }
 
-    // Tạo user mới
-    const newUser = new User({ name, email, password, phone });
+    // Hash the password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Tạo user mới với mật khẩu đã hash
+    const newUser = new User({ name, email, password: hashedPassword, phone });
     await newUser.save();
     console.log("New user created:", newUser);
+
+    // Queue welcome email asynchronously
+    await messageService.publishMessage(QUEUES.WELCOME_EMAIL, {
+      name,
+      email,
+      userId: newUser._id
+    });
 
     // Lưu thông tin user vào session để tự động đăng nhập
     req.session.user = {
@@ -90,7 +104,6 @@ exports.postRegister = async (req, res) => {
 exports.postLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    // let products = await Product.find();
 
     // Tìm user theo email
     const user = await User.findOne({ email });
@@ -102,8 +115,18 @@ exports.postLogin = async (req, res) => {
       });
     }
 
-    // So sánh password (demo, chưa có hashing)
-    if (user.password !== password) {
+    // Check if password is hashed (starts with $2a$ or $2b$ for bcrypt)
+    if (!user.password.startsWith('$2')) {
+      return res.render('auth', { 
+        loginError: 'Your account needs to be updated. Please register again.',
+        signupError: null,
+        formData: req.body
+      });
+    }
+
+    // Verify password using bcrypt
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       return res.render('auth', { 
         loginError: 'Invalid password.',
         signupError: null,

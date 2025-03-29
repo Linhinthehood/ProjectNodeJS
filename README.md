@@ -23,6 +23,7 @@
    - Login / Sign up
    - Session management
    - Email validation
+   - Asynchronous welcome email notifications (via RabbitMQ)
 
 2. Main Page
    - Product browsing
@@ -41,18 +42,29 @@
 5. Payment System
    - Payment processing
    - Order management
+   - Asynchronous order confirmation emails (via RabbitMQ)
+
+6. Microservices Architecture
+   - Asynchronous messaging using RabbitMQ
+   - Decoupled service communication
+   - Separate worker processes for handling notifications
 
 ## Technical Stack:
 - Backend: Node.js with Express
 - Database: MongoDB Atlas
 - Template Engine: EJS
 - File Storage: GridFS (MongoDB)
+- Message Broker: RabbitMQ (for service decoupling)
+- Caching: Redis (for session management)
 
 ## Docker Configuration:
 - Base image: Node.js 20 (slim)
 - Port: 8080
 - Environment variables managed through docker-compose
 - Automatic container restart enabled
+- Redis for session storage
+- RabbitMQ for message queuing
+- Nginx for load balancing
 
 ## Development Notes:
 - The application uses nodemon for development
@@ -60,11 +72,18 @@
 - GridFS is implemented for file storage
 - Session-based authentication is implemented
 - CORS is enabled for API access
+- RabbitMQ is used for message queue processing
 
 ## Project Structure:
 ```
 ├── config/
-│   └── db.js           # Database configuration
+│   ├── db.js           # Database configuration
+│   └── rabbitmq.js     # RabbitMQ configuration
+├── services/
+│   ├── emailService.js # Email service
+│   └── messageService.js # Messaging service
+├── workers/
+│   └── messagingWorkers.js # Message queue workers
 ├── routes/
 │   ├── authRoutes.js   # Authentication routes
 │   ├── productRoutes.js # Product management
@@ -73,27 +92,45 @@
 │   ├── outerwearRoutes.js # Outerwear category
 │   ├── accessoriesRoutes.js # Accessories category
 │   ├── aboutusRouters.js # About us page
-│   └── profileRoute.js # User profile
+│   ├── profileRoute.js # User profile
+│   └── orderRoutes.js  # Order processing
 ├── views/              # EJS templates
 ├── public/            # Static files
 ├── assets/           # Project assets
 ├── server.js         # Main application file
+├── worker.js         # Standalone worker process
 ├── Dockerfile        # Docker configuration
 └── docker-compose.yml # Docker Compose configuration
 ```
 
 ## Run guide:
-###For Local Development:
+### For Local Development:
 ```bash
-npm run dev
+npm run dev       # Run main application
+npm run worker:dev # Run worker process (in a separate terminal)
 ```
 
-###For Docker:
+### For Docker:
 ```bash
 npm run docker:up    # Start containers
 npm run docker:down  # Stop containers
 npm run docker:logs  # View logs
 ```
+
+## Message Broker Implementation:
+The project uses RabbitMQ as a message broker to implement:
+- Service decoupling between critical components
+- Asynchronous processing for non-critical operations
+- Improved system scalability and resilience
+
+Key implementation areas:
+1. User Registration -> Welcome Email Service
+2. Order Processing -> Order Notification Service
+
+The messaging architecture allows services to operate independently, improving:
+- Fault tolerance: If one service fails, others continue operating
+- Scalability: Services can be scaled independently based on load
+- Performance: Non-critical operations don't block the main response flow
 
 ## Testing load balancing:
 1. Run docker compose first
@@ -105,6 +142,7 @@ npm run docker:logs  # View logs
 ```json
 {
   "dependencies": {
+    "amqplib": "^0.10.3",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "compression": "^1.8.0",

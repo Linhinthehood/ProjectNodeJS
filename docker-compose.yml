@@ -12,6 +12,19 @@ services:
       - redis_data:/data
     restart: unless-stopped
 
+  # RabbitMQ service
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"    # AMQP protocol port
+      - "15672:15672"  # Management UI port
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    restart: unless-stopped
+
   # Nginx load balancer
   nginx:
     image: nginx:alpine
@@ -23,6 +36,7 @@ services:
       - app1
       - app2
       - app3
+    restart: unless-stopped
 
   # First app instance
   app1:
@@ -34,8 +48,12 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - IS_DOCKER=true
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASS=admin
     depends_on:
       - redis
+      - rabbitmq
     restart: unless-stopped
 
   # Second app instance
@@ -48,8 +66,12 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - IS_DOCKER=true
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASS=admin
     depends_on:
       - redis
+      - rabbitmq
     restart: unless-stopped
 
   # Third app instance
@@ -62,9 +84,32 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - IS_DOCKER=true
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASS=admin
     depends_on:
       - redis
+      - rabbitmq
     restart: unless-stopped
 
+  # Worker service for processing messages
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: node worker.js
+    environment:
+      - MONGO_URI=mongodb+srv://jabick10:Baole2004@projectnodejs.7x9uw.mongodb.net/products
+      - INSTANCE_ID=worker
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASS=admin
+    depends_on:
+      - rabbitmq
+    restart: unless-stopped
+    deploy:
+      replicas: 2  # Run multiple worker instances for better throughput
+
 volumes:
-  redis_data: 
+  redis_data:
+  rabbitmq_data: 

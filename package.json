@@ -6,6 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --inspect server.js",
     "dev": "node --watch server.js",
+    "worker": "node worker.js",
+    "worker:dev": "node --watch worker.js",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f"
@@ -16,6 +18,7 @@
   "type": "commonjs",
   "description": "",
   "dependencies": {
+    "amqplib": "^0.10.3",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "compression": "^1.8.0",

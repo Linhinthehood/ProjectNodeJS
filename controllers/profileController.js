@@ -1,5 +1,6 @@
 const Receipt = require('../models/receiptModel');
 const User = require('../models/userModel');
+const bcrypt = require('bcrypt');
 
 exports.getProfile = async (req, res, next) => {
   try {
@@ -15,21 +16,35 @@ exports.getProfile = async (req, res, next) => {
 
 exports.updateProfile = async (req, res, next) => {
   try {
-    const { name, email, phone, currentPassword, newPassword } = req.body;
+    const { name, email, phone, currentPassword, newPassword, confirmPassword } = req.body;
     const userId = req.session.user.id;
 
     const user = await User.findById(userId);
     if (!user) {
-      const error = new Error('User not found');
-      error.statusCode = 404;
-      throw error;
+      return res.render('profile', { 
+        user: req.session.user, 
+        receipts: [],
+        error: 'User not found' 
+      });
     }
 
-    // Password verification is still here as it's part of business logic
-    if (user.password !== currentPassword) {
-      const error = new Error('Current password is incorrect');
-      error.statusCode = 400;
-      throw error;
+    // Check if password is in bcrypt format
+    if (!user.password.startsWith('$2')) {
+      return res.render('profile', { 
+        user: req.session.user, 
+        receipts: [],
+        error: 'Your account needs to be updated with the new security system. Please contact support.' 
+      });
+    }
+
+    // Verify current password using bcrypt
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    if (!isPasswordValid) {
+      return res.render('profile', { 
+        user: req.session.user, 
+        receipts: [],
+        error: 'Current password is incorrect' 
+      });
     }
 
     // Update user information
@@ -39,7 +54,27 @@ exports.updateProfile = async (req, res, next) => {
     
     // Update password if provided
     if (newPassword && newPassword.trim() !== '') {
-      user.password = newPassword;
+      // Verify password confirmation
+      if (newPassword !== confirmPassword) {
+        return res.render('profile', { 
+          user: req.session.user, 
+          receipts: [],
+          error: 'New password and confirmation do not match' 
+        });
+      }
+
+      // Password validation
+      if (newPassword.length < 6) {
+        return res.render('profile', { 
+          user: req.session.user, 
+          receipts: [],
+          error: 'New password must be at least 6 characters long' 
+        });
+      }
+
+      // Hash the new password
+      const saltRounds = 10;
+      user.password = await bcrypt.hash(newPassword, saltRounds);
     }
 
     await user.save();
@@ -54,7 +89,12 @@ exports.updateProfile = async (req, res, next) => {
 
     res.redirect('/profile');
   } catch (error) {
-    next(error);
+    console.error(error);
+    res.render('profile', { 
+      user: req.session.user, 
+      receipts: [],
+      error: 'An error occurred while updating your profile' 
+    });
   }
 };
 

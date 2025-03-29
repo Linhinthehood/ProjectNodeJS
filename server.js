@@ -11,6 +11,8 @@ dotenv.config();
 
 // Import connectDB after loading environment variables
 const connectDB = require('./config/db');  
+const rabbitmq = require('./config/rabbitmq');
+const messagingWorkers = require('./workers/messagingWorkers');
 
 const app = express();
 
@@ -72,6 +74,16 @@ app.use(session(sessionConfig));
 
 // Kết nối tới MongoDB
 connectDB();
+
+// Connect to RabbitMQ and start workers
+    rabbitmq.connect()
+    .then(async () => {
+        console.log('RabbitMQ connected in server.js');
+        
+        // Start messaging workers
+        await messagingWorkers.startWorkers();
+    })
+    .catch(err => console.error('RabbitMQ connection error:', err));
 
 // Set view engine
 app.set('view engine', 'ejs');
@@ -160,4 +172,19 @@ const PORT = process.env.PORT || 8080;
 console.log('Using port:', PORT);
 app.listen(PORT, () => {
     console.log(`Server instance ${process.env.INSTANCE_ID || 'dev'} is running on port http://localhost:${PORT}`);
+});
+
+// Handle graceful shutdown
+process.on('SIGINT', async () => {
+  console.log('Closing server connections...');
+  
+  // Close RabbitMQ connection
+  await rabbitmq.closeConnection();
+  
+  // Close Redis connection if available
+  if (redisClient) {
+    await redisClient.quit();
+  }
+  
+  process.exit(0);
 });
